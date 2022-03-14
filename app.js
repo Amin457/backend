@@ -2,7 +2,10 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const userRouter = require("./api/users/user.router");
+const carteRouter = require("./api/cartes/carte.router");
 const partenaireRouter = require("./api/partenaires/partenaire.router");
+const promoRouter = require("./api/promotions/promo.router")
+
 const session = require('express-session');
 
 app.use(session({
@@ -25,6 +28,8 @@ app.use(express.json());
 
 app.use("/api/users", userRouter);
 app.use("/api/partenaires", partenaireRouter);
+app.use("/api/cartes", carteRouter);
+app.use("/api/promotions", promoRouter);
 
 
 
