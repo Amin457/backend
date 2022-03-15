@@ -4,7 +4,8 @@ const app = express();
 const userRouter = require("./api/users/user.router");
 const carteRouter = require("./api/cartes/carte.router");
 const partenaireRouter = require("./api/partenaires/partenaire.router");
-const promoRouter = require("./api/promotions/promo.router")
+const promoRouter = require("./api/promotions/promo.router");
+const localisationRouter = require("./api/localisations/localisation.router");
 
 const session = require('express-session');
 
@@ -30,6 +31,7 @@ app.use("/api/users", userRouter);
 app.use("/api/partenaires", partenaireRouter);
 app.use("/api/cartes", carteRouter);
 app.use("/api/promotions", promoRouter);
+app.use("/api/localisations",localisationRouter);
 
 
 
