@@ -1,8 +1,8 @@
-const {create,getUserByUserEmail,getUserByUserId,getUsers,deleteUser} = require("./user.service");
+const {create,getUserByUserEmail,getUserByUserId,getUsers,deleteUser,updateUser} = require("./user.service");
 const { hashSync, genSaltSync, compareSync } = require("bcrypt");
 const { sign } = require("jsonwebtoken");
 const conn = require("../../config/database");
-
+const http = require("http");
 
 
 module.exports = {
@@ -50,7 +50,7 @@ module.exports = {
       results.password = undefined;
       return res.json({
         success: 1,
-        data: results
+        data: results,
       });
     });
   },
@@ -92,27 +92,36 @@ module.exports = {
       getUserByUserEmail(mail, (err, results) => {
         if (err) throw err;
         if (results) {
-          
-          const result = (mdp==results.mdp);
+       const result = (mdp==results.mdp);
       if (result) {
-          req.session.loggedin = true;
-          req.session.mail = mail;
+        results.password = undefined;
+        const jsontoken = sign({ result: results }, "amin1234", {expiresIn: "1h"});
           return res.json({
-            success: 1,
-            message: "login successfully",
-            data : results
+            id: results.id,
+            token: jsontoken
           });
         }
         }
-          return res.json({
-            success: 0,
-            data: "Invalid email or password"
-          });
-		
+        return res.status(401).json({
+          unauthorised:true
+        });
         
       });
     }
-  }
+  },
+  updateUsers: (req, res) => {
+    const body = req.body;
+    updateUser(body, (err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      return res.json({
+        success: 1,
+        message: "updated successfully"
+      });
+    });
+  },
   }
 
 

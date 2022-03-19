@@ -66,6 +66,24 @@ module.exports = {
             return callBack(null, results);
           }
         );
+      },
+      updateUser: (data, callBack) => {
+        conn.query(
+          `update client set Nom=?, mail=?, mdp=? where id=?`,
+          [
+            data.Nom,
+            data.mail,
+            data.mdp,
+            data.id
+          ],
+          (error, results, fields) => {
+            if (error) {
+              callBack(error);
+            }
+            return callBack(null, results[0]);
+          }
+        );
       }
+      
     };
  
