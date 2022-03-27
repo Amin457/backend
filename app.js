@@ -7,6 +7,9 @@ const partenaireRouter = require("./api/partenaires/partenaire.router");
 const promoRouter = require("./api/promotions/promo.router");
 const localisationRouter = require("./api/localisations/localisation.router");
 const FeedbackRouter = require("./api/feedback/feedback.router");
+const ReclamationRouter = require("./api/reclamations/reclamation.router");
+const fileRouter = require("./api/files/file.router");
+
 
 const session = require('express-session');
 
@@ -34,7 +37,8 @@ app.use("/api/cartes", carteRouter);
 app.use("/api/promotions", promoRouter);
 app.use("/api/localisations",localisationRouter);
 app.use("/api/feedback",FeedbackRouter);
-
+app.use("/api/reclamation",ReclamationRouter);
+app.use("/api/files",fileRouter);
 
 
 
@@ -52,7 +56,6 @@ soap.createClientAsync(wsdlUrl, {overridePromiseSuffix: 'Promise'})
         console.dir(databases)
       })
   })*/
-
 
 
 
