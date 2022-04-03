@@ -1,4 +1,4 @@
-const {insertFeed , updateFeed} = require("./feedback.service");
+const {insertFeed , updateFeed ,getAllFeed} = require("./feedback.service");
 const conn = require("../../config/database");
 
 
@@ -13,9 +13,11 @@ module.exports = {
               console.log(err);
               return;
             }
+            console.log(results);
             return res.json({
               success: 1,
-              message: "updated successfully"
+              message: "updated successfully",
+              results
             });
           });
 
@@ -29,14 +31,34 @@ module.exports = {
           message: "Database connection errror"
         });
       }
-
+      console.log(results);
       return res.status(200).json({
         success: 1,
-        message: "success"
+        message: "success",
+        results
       });
     })};
   }
 );
+},
+getAllFeed: (req, res) => {
+  const id = req.params.id;
+  getAllFeed(id, (err, results) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    if (results.length >0) {
+      return res.json({
+        success: 1,
+        data: results
+      });
+    }
+      return res.json({
+        success: 0,
+        message: "Record not Found"
+    });
+  });
 }
   }
 
