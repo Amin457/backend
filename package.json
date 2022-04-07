@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "child_process": "^1.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "easy-soap-request": "^4.6.0",
@@ -21,6 +22,7 @@
     "mysql": "^2.18.1",
     "soap": "^0.43.0",
     "strong-soap": "^3.4.0",
+    "util": "^0.12.4",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

@@ -9,7 +9,7 @@ const localisationRouter = require("./api/localisations/localisation.router");
 const FeedbackRouter = require("./api/feedback/feedback.router");
 const ReclamationRouter = require("./api/reclamations/reclamation.router");
 const fileRouter = require("./api/files/file.router");
-
+const soapRouter = require("./api/soap/soap.router");
 
 const session = require('express-session');
 
@@ -22,12 +22,11 @@ app.use(session({
 const cors=require("cors");
 const corsOptions ={
    origin:'*', 
-   credentials:true,            //access-control-allow-credentials:true
+   credentials:true,
    optionSuccessStatus:200,
 }
 
-app.use(cors(corsOptions)) // Use this after the variable declaration
-
+app.use(cors(corsOptions))
 app.use(express.json());
 
 
@@ -39,26 +38,7 @@ app.use("/api/localisations",localisationRouter);
 app.use("/api/feedback",FeedbackRouter);
 app.use("/api/reclamation",ReclamationRouter);
 app.use("/api/files",fileRouter);
-
-
-
-/*
-'use strict'
-
-const soap = require('soap')
-const wsdlUrl = 'http://www.chemspider.com/MassSpecAPI.asmx?WSDL'
-
-soap.createClientAsync(wsdlUrl, {overridePromiseSuffix: 'Promise'})
-  .then(client => {
-    client.GetDatabasesPromise({})
-      .then(results => {
-        const databases = results[0].GetDatabasesResult.string
-        console.dir(databases)
-      })
-  })*/
-
-
-
+app.use("/api/soap",soapRouter);
 
 
 

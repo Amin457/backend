@@ -3,9 +3,10 @@ const conn = require("../../config/database");
 
 module.exports = {
     create: (data, callBack) => {
-      conn.query('insert into client(Nom,mail,mdp) values(?,?,?)' ,
+      conn.query('insert into client(Nom,Prenom,mail,mdp) values(?,?,?,?)' ,
             [
                 data.Nom,
+                data.Prenom,
                 data.mail,
                 data.mdp
           ]   ,
@@ -69,9 +70,10 @@ module.exports = {
       },
       updateUser: (data, callBack) => {
         conn.query(
-          `update client set Nom=?, mail=?, mdp=? where id=?`,
+          `update client set Nom=?,Prenom=? ,mail=?, mdp=? where id=?`,
           [
             data.Nom,
+            data.Prenom,
             data.mail,
             data.mdp,
             data.id
