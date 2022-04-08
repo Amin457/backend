@@ -1,7 +1,7 @@
-const {insertConfig,getPartenaires} = require("./partenaire.service");
+const {insertConfig,getPartenaires,getPartConfig} = require("./partenaire.service");
 
 module.exports = {
-  createConfig: (req, res) => {
+  /*createConfig: (req, res) => {
     const body = req.body;
        insertConfig(body,(err, results) => {
       if (err) {
@@ -17,7 +17,7 @@ module.exports = {
       });
     });
 
-},
+},*/
 getPartenaires: (req, res) => {
   getPartenaires((err, results) => {
     if (err) {
@@ -27,6 +27,24 @@ getPartenaires: (req, res) => {
     return res.json({
       success: 1,
       data: results
+    });
+  });
+},
+
+getPartConfig: (req, res) => {
+  const id_part = req.params.id_part;
+  getPartConfig(id_part, (err, results) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    if (results.length >0) {
+      return res.json({
+       results
+      });
+    }
+      return res.json({
+        message: "Record not Found"
     });
   });
 }

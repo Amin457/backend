@@ -1,11 +1,11 @@
-const { createConfig,getPartenaires} = require("./partenaire.controller");
+const {getPartConfig,getPartenaires} = require("./partenaire.controller");
 const router = require("express").Router();
 
-router.post("/",createConfig);
+/*router.post("/",createConfig);*/
 router.get("/",getPartenaires);
-/*router.get("/:id",getUserByUserId);
-router.delete("/:id",deleteUser);
-router.post("/login",login);*/
+router.get("/getConfig/:id_part",getPartConfig);
+
+
 
 
 module.exports = router;

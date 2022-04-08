@@ -2,8 +2,13 @@ const conn = require("../../config/database");
 
     module.exports = {
         GetLoyaltyCard:(req,res)=>{
+            
             const cardId = req.body.cardId;
             const dbId = req.body.dbId;
+            const id = req.body.id;
+            const id_part = req.body.id_part;
+            const StoreId = req.body.StoreId;
+
 
             var runner = require("child_process");
             var phpScriptPath = "phpScript/GetLoyaltyCard.php";
@@ -16,9 +21,33 @@ const conn = require("../../config/database");
                });
               }else{
              var data = JSON.parse(phpResponse).GetLoyaltyCardResult;
-             return res.json({
-               data
-            });}
+             if(data.StoreId==StoreId){
+             conn.query('select * from carte where num_carte=?' ,[data.Id] ,(err, results, fields) => {
+              if (results.length==0) {
+              conn.query(
+              `INSERT INTO carte (num_carte,id_part,id_client)
+              VALUES (?,?,?);`,
+              [data.Id,id_part,id]);
+
+              return res.json({
+                message:"carte ajouté avec succée",
+                data
+             })
+
+              }else{
+
+                return res.json({
+                  message:"carte déja existe",
+                  data
+               })
+
+             }});}else{
+              return res.json({
+                message:"cette carte n'appartient a cette boutique",
+             })
+             }
+             
+            ;}
             });},
 
             createCard:(req,res)=>{
