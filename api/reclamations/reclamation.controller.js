@@ -1,4 +1,4 @@
-const {insertRec} = require("./reclamation.service");
+const {insertRec,getAllRec} = require("./reclamation.service");
 
 
 
@@ -16,6 +16,23 @@ module.exports = {
      return res.status(200).json({
         success: 1,
         message: "success"
+      });
+    });
+  },
+  getAllRec: (req, res) => {
+    const id = req.params.id;
+    getAllRec(id, (err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      if (results.length >0) {
+        return res.json({
+          results
+        });
+      }
+        return res.json({
+          message: "Record not Found"
       });
     });
   }
