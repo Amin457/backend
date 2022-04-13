@@ -10,6 +10,8 @@ const FeedbackRouter = require("./api/feedback/feedback.router");
 const ReclamationRouter = require("./api/reclamations/reclamation.router");
 const fileRouter = require("./api/files/file.router");
 const soapRouter = require("./api/soap/soap.router");
+const cadeauRouter = require("./api/cadeau/cadeau.router");
+
 
 const session = require('express-session');
 
@@ -39,6 +41,7 @@ app.use("/api/feedback",FeedbackRouter);
 app.use("/api/reclamation",ReclamationRouter);
 app.use("/api/files",fileRouter);
 app.use("/api/soap",soapRouter);
+app.use("/api/cadeau",cadeauRouter);
 
 
 
