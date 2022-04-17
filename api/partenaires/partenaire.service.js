@@ -42,6 +42,18 @@ module.exports = {
               return callBack(null, results);
             }
           );
+      },
+      getPartByEmail: (mail, callBack) => {
+        conn.query(
+          `select * from partenaire where mail= ?`,
+          [mail],
+          (error, results, fields) => {
+            if (error) {
+              callBack(error);
+            }
+            return callBack(null, results[0]);
+          }
+        );
       }
     };
  

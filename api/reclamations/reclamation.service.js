@@ -3,9 +3,9 @@ const conn = require("../../config/database");
 
 module.exports = {
       insertRec: (data, callBack) => {
-        conn.query('insert into reclamation (id_part,id_client,sujet_rec,description) values(?,?,?,?)' ,
+        conn.query('insert into reclamation (id_boutique,id_client,sujet_rec,description) values(?,?,?,?)' ,
         [
-            data.id_part,
+            data.id_boutique,
             data.id_client,           
             data.sujet_rec,
             data.description
@@ -20,7 +20,7 @@ module.exports = {
         );
       },
       getAllRec: (id, callBack) => {
-        conn.query(`select reclamation.sujet_rec,reclamation.description,client.Nom,client.Prenom,client.mail from  reclamation,client where id_part=? and reclamation.id_client=client.id`,
+        conn.query(`select DISTINCT reclamation.sujet_rec,reclamation.description,client.Nom,client.Prenom,client.mail,localisation.boutique from  reclamation,client,localisation,partenaire where reclamation.id_boutique=localisation.id and localisation.id_part=? and reclamation.id_client=client.id`,
         [id],
             (error, results, fields) => {
               if (error) {

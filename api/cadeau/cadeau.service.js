@@ -35,5 +35,17 @@ module.exports = {
             );
  
         
-          }
+          },
+          getRecompense: (id, callBack) => {
+            conn.query(`select cadeau.description,partenaire.societe ,recompense.date  from cadeau,partenaire,recompense where recompense.id_cadeau=cadeau.id_cadeau and cadeau.id_part=partenaire.id_part and recompense.id_client=?`,
+            [id],
+                (error, results, fields) => {
+                  if (error) {
+                    callBack(error);
+                  }
+          
+                  return callBack(null, results);
+                }
+              );
+            }
 }
