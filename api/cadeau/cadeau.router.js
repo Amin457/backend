@@ -3,7 +3,7 @@ const router = require("express").Router();
 
 router.get("/:id_part",getCadeauByIdPart);
 router.post("/",insertRecompense);
-router.get("/getRecompense/:id",getRecompense);
+router.get("/getRecompense/:id/:id_part",getRecompense);
 
 
 

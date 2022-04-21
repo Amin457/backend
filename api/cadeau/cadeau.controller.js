@@ -72,7 +72,9 @@ getCadeauByIdPart: (req, res) => {
       },
       getRecompense: (req, res) => {
         const id = req.params.id;
-        getRecompense(id, (err, results) => {
+        const id_part = req.params.id_part;
+
+        getRecompense(id,id_part, (err, results) => {
           if (err) {
             console.log(err);
             return;

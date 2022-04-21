@@ -16,7 +16,7 @@ module.exports = {
       }
         return res.json({
           success: 0,
-          message: "Record not Found"
+          message: "vous n'avez auncun carte fidélité"
       });
     });
   },

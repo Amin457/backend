@@ -118,7 +118,7 @@ module.exports = {
       }
       return res.json({
         success: 1,
-        message: "updated successfully"
+        message: 'modification avec succées !!'
       });
     });
   },
