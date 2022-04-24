@@ -118,7 +118,8 @@ module.exports = {
       }
       return res.json({
         success: 1,
-        message: 'modification avec succées !!'
+        message: 'modification avec succées !!',
+        results
       });
     });
   },
