@@ -85,7 +85,22 @@ module.exports = {
             return callBack(null, results[0]);
           }
         );
+      },
+      registerNotif : (data, callBack) => {
+        conn.query(
+          'insert into notification(token,id_client) values(?,?)',
+          [
+            data.token,
+            data.id_client
+          ],
+          (error, results, fields) => {
+            if (error) {
+              callBack(error);
+            }
+            return callBack(null, results);
+          }
+        );
       }
       
     };
- 
+      
