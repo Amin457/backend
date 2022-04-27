@@ -12,6 +12,7 @@ const fileRouter = require("./api/files/file.router");
 const soapRouter = require("./api/soap/soap.router");
 const cadeauRouter = require("./api/cadeau/cadeau.router");
 const statRec = require("./api/statistique_reclamation/statRec.router");
+const notification = require("./api/notifications/notification.router")
 
 
 const session = require('express-session');
@@ -44,6 +45,8 @@ app.use("/api/files",fileRouter);
 app.use("/api/soap",soapRouter);
 app.use("/api/cadeau",cadeauRouter);
 app.use("/api/statRec",statRec);
+app.use("/api/notification",notification);
+
 
 
 app.listen(3000,()=>{
