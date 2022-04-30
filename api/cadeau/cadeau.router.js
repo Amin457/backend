@@ -1,4 +1,4 @@
-const { getCadeauByIdPart,insertRecompense,getRecompense,getEtatJeux,getPermissionJeux,updateEtatJeux,deleteCadeau,ajouterCadeau} = require("./cadeau.controller");
+const { getCadeauByIdPart,insertRecompense,getRecompense,getEtatJeux,getPermissionJeux,updateEtatJeux,deleteCadeau,ajouterCadeau,getGagnants} = require("./cadeau.controller");
 const router = require("express").Router();
 
 router.get("/:id_part",getCadeauByIdPart);
@@ -10,10 +10,8 @@ router.patch("/updateEtatJeux/:id_part",updateEtatJeux);
 router.patch("/:id_cadeau",deleteCadeau);
 //router.patch("/modifierCadeau",modifierCadeau);
 router.post("/ajouterCadeau",ajouterCadeau);
-
+router.get("/getGagnants/:id_part",getGagnants);
 
 
 
 module.exports = router;
-/*
-w ajout  modifier*/

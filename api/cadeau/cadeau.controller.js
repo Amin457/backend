@@ -1,4 +1,4 @@
-const {getCadeauByIdPart,insertRecompense,getRecompense,getEtatJeux,updateEtatJeux,deleteCadeau,ajouterCadeau} = require("./cadeau.service");
+const {getCadeauByIdPart,insertRecompense,getRecompense,getEtatJeux,updateEtatJeux,deleteCadeau,ajouterCadeau,getGagnants} = require("./cadeau.service");
 const conn = require("../../config/database");
 var dateObj = new Date();
 var month = dateObj.getUTCMonth() + 1; //months from 1-12
@@ -205,5 +205,22 @@ console.log(results);
       });
       
        
+      },
+      getGagnants : (req, res) => {
+        const id_part = req.params.id_part;
+        getGagnants(id_part, (err, results) => {
+          if (err) {
+            console.log(err);
+            return;
+          }
+          if (results.length >0) {
+            return res.json({
+              results
+            });
+          }
+            return res.json({
+              message: "Record not Found"
+          });
+        });
       }
 }

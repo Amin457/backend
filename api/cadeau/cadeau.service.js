@@ -34,11 +34,10 @@ module.exports = {
             );
           },
           insertRecompense: (data, callBack) => {
-            conn.query('insert into recompense (id_client,id_cadeau,date) values(?,?,?)' ,
+            conn.query('insert into recompense (id_client,id_cadeau) values(?,?)' ,
             [
                 data.id_client,
                 data.id_cadeau,           
-                newdate
           ]   ,
           (error, results, fields) => {
             if (error) {
@@ -123,4 +122,18 @@ module.exports = {
      
             
               },
+              getGagnants: (id_part, callBack) => {
+                conn.query(`select cadeau.description,recompense.date,client.Nom,client.Prenom,client.mail  from cadeau,partenaire,recompense,jeux_partenaire,client
+                 where recompense.id_cadeau=cadeau.id_cadeau and recompense.id_client=client.id
+                  and cadeau.id_jeu_part=jeux_partenaire.id_jeu_part and jeux_partenaire.id_part=partenaire.id_part and jeux_partenaire.id_part=?`,
+                [id_part],
+                    (error, results, fields) => {
+                      if (error) {
+                        callBack(error);
+                      }
+              
+                      return callBack(null, results);
+                    }
+                  );
+                }
 }
