@@ -1,7 +1,7 @@
-const {createFeed,getAllFeed} = require("./feedback.controller");
+const {createFeed,getAllQuest} = require("./feedback.controller");
 const router = require("express").Router();
 
 router.put("/",createFeed);
-router.get("/:id",getAllFeed);
+router.get("/question/:id_part",getAllQuest);
 
 module.exports = router;

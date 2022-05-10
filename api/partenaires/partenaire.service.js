@@ -54,6 +54,18 @@ module.exports = {
             return callBack(null, results[0]);
           }
         );
-      }
+      },
+      getNamePartById: (id_part,callBack) => {
+        conn.query(`select societe from partenaire where id_part=?`,
+        [id_part],
+            (error, results, fields) => {
+              if (error) {
+                callBack(error);
+              }
+      
+              return callBack(null, results);
+            }
+          );
+        }
     };
  

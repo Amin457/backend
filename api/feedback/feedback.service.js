@@ -3,15 +3,12 @@ const conn = require("../../config/database");
 var datetime = new Date();
 module.exports = {
       insertFeed: (data, callBack) => {
-        conn.query('insert into feedback (id_part,id_client,Q1,Q2,Q3,Q4,Q5,date) values(?,?,?,?,?,?,?,?)' ,
+        conn.query('insert into feedback (id_part,id_client,id_question,id_rep,date) values(?,?,?,?,?)' ,
         [
             data.id_part,
             data.id_client,
-            data.Q1,
-            data.Q2,
-            data.Q3,
-            data.Q4,
-            data.Q5,
+            data.id_question,
+            data.id_rep,
             datetime
       ]   ,
       (error, results, fields) => {
@@ -25,16 +22,13 @@ module.exports = {
       },
       updateFeed: (data, callBack) => {
         conn.query(
-          `update feedback set Q1=?, Q2=?, Q3=? , Q4=? , Q5=? , date= ? where id_part=? and id_client=?`,
+          `update feedback set id_rep=? , date= ? where id_part=? and id_client=? and id_question=?`,
           [
-            data.Q1,
-            data.Q2,
-            data.Q3,
-            data.Q4,
-            data.Q5,
+            data.id_rep,
             datetime,
             data.id_part,
             data.id_client,
+            data.id_question
           ],
           (error, results, fields) => {
             if (error) {
@@ -44,18 +38,34 @@ module.exports = {
           }
         );
       },
-      getAllFeed: (id, callBack) => {
-        conn.query(`select feedback.Q1,feedback.Q2,feedback.Q3,feedback.Q4,feedback.Q5,client.Nom from  feedback,client where id_part=? and feedback.id_client=client.id`,
-        [id],
+      getAllQuest: (id_part,callBack) => {
+        conn.query(`select distinct question.description , question.id_question from question,reponse where question.id_question=reponse.id_question and question.id_part=?;`,
+        [id_part],
             (error, results, fields) => {
               if (error) {
                 callBack(error);
               }
-      
-              return callBack(null, results);
+        return callBack(null,results);
+
+              
             }
           );
-        }     
+        } ,
+        getAllRep: (id_part,callBack) => {
+          conn.query(`select reponse.reponse , reponse.id_rep, question.id_question from reponse,question where reponse.id_question=question.id_question and question.id_part=?;`,
+          [id_part],
+              (error, results1, fields) => {
+                if (error) {
+                  callBack(error);
+                }
+               
+              
+  
+                  return callBack(null,results1);
+      });
+                
+              }
+             
       
     };
  

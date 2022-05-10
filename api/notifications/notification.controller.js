@@ -1,5 +1,9 @@
 const conn = require("../../config/database");
-
+var dateObj = new Date();
+var month = dateObj.getUTCMonth() + 1;
+var day = dateObj.getUTCDate();
+var year = dateObj.getUTCFullYear();
+newdate = year + "-" + month + "-" + day;
 //push notification fire base
 var FCM = require('fcm-node');
 
@@ -26,7 +30,7 @@ conn.query(
           }*/
       
       };
-      
+    
       fcm.send(message, function(err, response) {
           if (err) {
               console.log("Something has gone wrong!"+err);
@@ -34,14 +38,34 @@ conn.query(
           } else {
               // showToast("Successfully sent with response");
               console.log("Successfully sent with response: ", response);
-              return res.json({
-                success: 1,
-                message: 'notification envoyer avec success',
-              });
+              console.log("hhhhhhhhhhhhhhhhhhhh",message);
+          
+
           }
       
       });
     }//end boucle for
+    conn.query(
+      `select id from client`,(error, results, fields) => {
+       if(results.length>0){
+        for (var i = 0; i < results.length ; i++) {
+
+        conn.query('insert into detail_notification(title,body,date,id_client) values(?,?,?,?)' ,
+        [
+            message.notification.title,
+            message.notification.body,
+            newdate,
+            results[i].id
+      ]
+    );
+    }
+       }});
+  
+    return res.json({
+      success: 1,
+      message: 'notification envoyer avec success',
+    });
+    
   }else{
 
     return res.json({
@@ -53,6 +77,63 @@ conn.query(
   }
 );
 }
+const getNbr = async (req, res) => {
+
+  conn.query(
+    `select count(*) as nbr from detail_notification where vue=0 and id_client=?`,
+    [
+      req.params.id_client
+    ],(error, results, fields) => {
+
+     if(results.length>0){ 
+      return res.json({
+        success: 1,
+       data: results[0]
+      });
+      
+    }else{
+  
+      return res.json({
+        success: 0,
+        data : results[0],
+      });
+  
+    }
+    }
+  );
+  } ;
+  const getAllNotif = async (req, res) => {
+
+    conn.query(
+      `select * from detail_notification where id_client=? ORDER BY date desc`,[req.params.id_client],(error, results, fields) => {
+       if(results.length>0){ 
+        return res.json({
+          success: 1,
+         data: results
+        });
+        
+      }else{
+    
+        return res.json({
+          success: 0,
+          message :"aucune notification",
+        });
+    
+      }
+      }
+    );
+    conn.query(
+      `update detail_notification set vue=1 where id_client=?`,
+      [
+        req.params.id_client
+      ],
+      (error, results, fields) => {
+        console.log(results);
+      }
+    );
+    }
 module.exports = {
-    notification
+    getAllNotif,
+    notification,
+    getNbr
   };

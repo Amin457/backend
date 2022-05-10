@@ -1,4 +1,5 @@
 const {getAllPromos,getPromoByPart} = require("./promo.service");
+const conn = require("../../config/database");
 
 
 module.exports = {
@@ -8,10 +9,12 @@ getAllPromos: (req, res) => {
       console.log(err);
       return;
     }
+
     return res.json({
       success: 1,
       data: results
     });
+
   });
 },
 getPromoByPart: (req, res) => {

@@ -1,4 +1,4 @@
-const {insertFeed , updateFeed ,getAllFeed} = require("./feedback.service");
+const {insertFeed , updateFeed ,getAllQuest,getAllRep} = require("./feedback.service");
 const conn = require("../../config/database");
 
 
@@ -6,14 +6,15 @@ const conn = require("../../config/database");
 module.exports = {
  createFeed: (req, res) => {
     const body = req.body;
-    conn.query('select * from feedback where id_client=? and id_part=?' ,[body.id_client,body.id_part] ,(err, results, fields) => {
+    conn.query('select * from feedback where id_client=? and id_part=? and id_question=?' ,[body.id_client,body.id_part,body.id_question] ,(err, results, fields) => {
     if (results.length >0) {
+      console.log(results);
+
      updateFeed(body, (err, results) => {
             if (err) {
               console.log(err);
               return;
             }
-            console.log(results);
             return res.json({
               success: 1,
               message: "updated successfully",
@@ -41,23 +42,29 @@ module.exports = {
   }
 );
 },
-getAllFeed: (req, res) => {
-  const id = req.params.id;
-  getAllFeed(id, (err, results) => {
+getAllQuest: (req, res) => {
+  const id_part = req.params.id_part;
+  getAllQuest(id_part, (err, results) => {
+
     if (err) {
       console.log(err);
       return;
     }
+    
+    getAllRep(id_part, (err, results1) => {
+
     if (results.length >0) {
       return res.json({
-        success: 1,
-        data: results
+        question : results,
+        reponse : results1
       });
     }
       return res.json({
         success: 0,
         message: "Record not Found"
     });
+  
+  });
   });
 }
   }

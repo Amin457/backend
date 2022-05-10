@@ -3,7 +3,7 @@ const conn = require("../../config/database");
 
 module.exports = {
       getAllCartes: (id, callBack) => {
-        conn.query(`select carte.id_carte,carte.num_carte,carte.boutique,carte.note,carte.id_part,carte.id_client , partenaire.img from  carte,partenaire where id_client=? and carte.id_part=partenaire.id_part`,
+        conn.query(`select carte.id_carte,carte.num_carte,partenaire.societe,carte.note,carte.id_part,carte.id_client , partenaire.img from  carte,partenaire where id_client=? and carte.id_part=partenaire.id_part`,
         [id],
             (error, results, fields) => {
               if (error) {

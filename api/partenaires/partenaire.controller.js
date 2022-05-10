@@ -1,4 +1,4 @@
-const {insertConfig,getPartByEmail,getPartenaires,getPartConfig} = require("./partenaire.service");
+const {insertConfig,getPartByEmail,getPartenaires,getPartConfig,getNamePartById} = require("./partenaire.service");
 const { sign } = require("jsonwebtoken");
 module.exports = {
   /*createConfig: (req, res) => {
@@ -68,6 +68,24 @@ getPartConfig: (req, res) => {
       });
     }
       return res.json({
+        message: "Record not Found"
+    });
+  });
+},
+getNamePartById: (req, res) => {
+  const id_part = req.params.id_part;
+  getNamePartById(id_part, (err, results) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    if (results.length >0) {
+      return res.json({
+        data: results[0]
+      });
+    }
+      return res.json({
+        success: 0,
         message: "Record not Found"
     });
   });

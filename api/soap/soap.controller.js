@@ -109,7 +109,9 @@ const conn = require("../../config/database");
                       if (results.length==0) {
 
                         runner.exec("php " + phpScriptPath + " " +argsString, function(err, phpResponse, stderr) {
+                          console.log("jjjjjjjjjjjjjjjj",phpResponse)
                           var data = JSON.parse(phpResponse).AddNewCustomerResult;
+                         
                           console.log(data)
                           if(err){
                             return res.status(500).json({
