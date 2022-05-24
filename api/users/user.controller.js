@@ -1,4 +1,4 @@
-const {create,getUserByUserEmail,getUserByUserId,getUsers,deleteUser,updateUser,registerNotif} = require("./user.service");
+const { create, getUserByUserEmail, getUserByUserId, updateUser, registerNotif,deleteToken } = require("./user.service");
 const { hashSync, genSaltSync, compareSync } = require("bcrypt");
 const { sign } = require("jsonwebtoken");
 const conn = require("../../config/database");
@@ -10,30 +10,30 @@ module.exports = {
     const body = req.body;
     /*const salt = genSaltSync(10);
     body.mdp = hashSync(body.mdp, salt);*/
-    conn.query('select mail from client where mail=?' ,[body.mail] ,(err, results, fields) => {
-    if (results.length >0) {
-      return res.status(500).json({
-        success: 0,
-        message: "email alredy in use"
-      });
-    }
-
-    create(body,(err, results) => {
-      if (err) {
-        console.log(err);
+    conn.query('select mail from client where mail=?', [body.mail], (err, results, fields) => {
+      if (results.length > 0) {
         return res.status(500).json({
           success: 0,
-          message: "Database connection errror"
+          message: "email alredy in use"
         });
       }
-      return res.status(200).json({
-        success: 1,
-        data: results
+
+      create(body, (err, results) => {
+        if (err) {
+          console.log(err);
+          return res.status(500).json({
+            success: 0,
+            message: "Database connection errror"
+          });
+        }
+        return res.status(200).json({
+          success: 1,
+          data: results
+        });
       });
-    });
-  }
-);
-},
+    }
+    );
+  },
   getUserByUserId: (req, res) => {
     const id = req.params.id;
     getUserByUserId(id, (err, results) => {
@@ -54,37 +54,6 @@ module.exports = {
       });
     });
   },
-  getUsers: (req, res) => {
-    getUsers((err, results) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      return res.json({
-        success: 1,
-        data: results
-      });
-    });
-  },
-  deleteUser: (req, res) => {
-    const id = req.params.id;
-    deleteUser(id, (err, results) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      if (!results) {
-        return res.json({
-          success: 0,
-          message: "Record Not Found"
-        });
-      }
-      return res.json({
-        success: 1,
-        message: "user deleted successfully"
-      });
-    });
-  },
   login: (req, res) => {
     let mail = req.body.mail;
     let mdp = req.body.mdp;
@@ -92,20 +61,20 @@ module.exports = {
       getUserByUserEmail(mail, (err, results) => {
         if (err) throw err;
         if (results) {
-       const result = (mdp==results.mdp);
-      if (result) {
-        results.password = undefined;
-        const jsontoken = sign({ result: results }, "amin1234", {expiresIn: "1h"});
-          return res.json({
-            id: results.id,
-            token: jsontoken
-          });
-        }
+          const result = (mdp == results.mdp);
+          if (result) {
+            results.password = undefined;
+            const jsontoken = sign({ result: results }, "amin1234", { expiresIn: "1h" });
+            return res.json({
+              id: results.id,
+              token: jsontoken
+            });
+          }
         }
         return res.status(401).json({
-          unauthorised:true
+          unauthorised: true
         });
-        
+
       });
     }
   },
@@ -123,34 +92,43 @@ module.exports = {
       });
     });
   },
-  registerNotif : (req, res) => {
+  registerNotif: (req, res) => {
     const body = req.body;
 
-    conn.query('select * from notification where token=?' ,[body.token] ,(err, results, fields) => {
-      if (results.length >0) {
-        return res.status(500).json({
-          success: 0,
-          message: "déja enrigistrer"
-        });
-      }
-  
-      registerNotif(body, (err, results) => {
-        if (err) {
-          console.log(err);
-          return;
-        }
-        return res.json({
-          success: 1,
-          message: 'insertion avec success',
-          results
-        });
-      });
-    
-    }
-  );
+    /* conn.query('select * from notification where token=?' ,[body.token] ,(err, results, fields) => {
+       if (results.length >0) {
+         return res.status(500).json({
+           success: 0,
+           message: "déja enrigistrer"
+         });
+       }*/
 
-   
+    registerNotif(body, (err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      return res.json({
+        success: 1,
+        message: 'insertion avec success',
+        results
+      });
+    });
+
+  },
+  deleteToken: (req, res) => {
+    const id = req.params.id;
+    deleteToken(id, (err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      return res.json({
+        success: 1
+      });
+    });
+
   }
-  }
+}
 
 

@@ -18,20 +18,7 @@ module.exports = {
             return callBack(null, results);
           }
         );
-      },
-       getUsers: callBack => {
-        conn.query(
-          `select Nom, mail from client`,
-          [],
-          (error, results, fields) => {
-            if (error) {
-              callBack(error);
-            }
-            return callBack(null, results);
-          }
-        );
-      },
-    
+      },    
       getUserByUserId: (id, callBack) => {
         conn.query(
           `select Nom, mail from client where id = ?`,
@@ -46,7 +33,7 @@ module.exports = {
       },
       getUserByUserEmail: (mail, callBack) => {
         conn.query(
-          `select * from client where mail= ?`,
+          `select * from client where mail= ? and etat=1`,
           [mail],
           (error, results, fields) => {
             if (error) {
@@ -56,26 +43,15 @@ module.exports = {
           }
         );
       },
-      deleteUser: (id, callBack) => {
-        conn.query(
-          `delete from client where id = ?`,
-          [id],
-          (error, results, fields) => {
-            if (error) {
-              callBack(error);
-            }
-            return callBack(null, results);
-          }
-        );
-      },
       updateUser: (data, callBack) => {
         conn.query(
-          `update client set Nom=?,Prenom=? ,mail=?, mdp=? where id=?`,
+          `update client set Nom=?,Prenom=? ,mail=?, mdp=?,img=? where id=?`,
           [
             data.Nom,
             data.Prenom,
             data.mail,
             data.mdp,
+            data.img,
             data.id
           ],
           (error, results, fields) => {
@@ -92,6 +68,20 @@ module.exports = {
           [
             data.token,
             data.id_client
+          ],
+          (error, results, fields) => {
+            if (error) {
+              callBack(error);
+            }
+            return callBack(null, results);
+          }
+        );
+      },
+      deleteToken : (id, callBack) => {
+        conn.query(
+          'DELETE FROM notification WHERE id_client=?',
+          [
+            id
           ],
           (error, results, fields) => {
             if (error) {

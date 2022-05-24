@@ -109,15 +109,21 @@ const conn = require("../../config/database");
                       if (results.length==0) {
 
                         runner.exec("php " + phpScriptPath + " " +argsString, function(err, phpResponse, stderr) {
-                          console.log("jjjjjjjjjjjjjjjj",phpResponse)
+                          /*console.log("jjjjjjjjjjjjjjjj",phpResponse)
                           var data = JSON.parse(phpResponse).AddNewCustomerResult;
-                         
                           console.log(data)
+                          */
+                        
                           if(err){
                             return res.status(500).json({
                                 message : err.message
                            });
                           }else{
+
+                            //////////
+                            console.log("jjjjjjjjjjjjjjjj",phpResponse)
+                          var data = JSON.parse(phpResponse).AddNewCustomerResult;
+                          //////
                          conn.query(
                           `INSERT INTO clientele (id_client,id_part,client_ref)
                           VALUES (?,?,?);`,

@@ -1,95 +1,93 @@
-const {insertConfig,getPartByEmail,getPartenaires,getPartConfig,getNamePartById} = require("./partenaire.service");
+const { insertConfig, getPartByEmail, getPartenaires, getPartConfig, getNamePartById, updatePart } = require("./partenaire.service");
 const { sign } = require("jsonwebtoken");
 module.exports = {
-  /*createConfig: (req, res) => {
-    const body = req.body;
-       insertConfig(body,(err, results) => {
+
+  login: (req, res) => {
+    let mail = req.body.mail;
+    let mdp = req.body.mdp;
+    if (mail && mdp) {
+      getPartByEmail(mail, (err, results) => {
+        if (err) throw err;
+        if (results) {
+          const result = (mdp == results.mdp);
+          if (result) {
+            results.password = undefined;
+            const jsontoken = sign({ result: results }, "amin1234", { expiresIn: "1h" });
+            return res.json({
+              id: results.id,
+              token: jsontoken
+            });
+          }
+        }
+        return res.status(401).json({
+          unauthorised: true
+        });
+
+      });
+    }
+  },
+  getPartenaires: (req, res) => {
+    getPartenaires((err, results) => {
       if (err) {
         console.log(err);
-        return res.status(500).json({
-          success: 0,
-          message: "Database connection errror"
-        });
+        return;
       }
-      return res.status(200).json({
+      return res.json({
         success: 1,
         data: results
       });
     });
+  },
 
-},*/
-login: (req, res) => {
-  let mail = req.body.mail;
-  let mdp = req.body.mdp;
-  if (mail && mdp) {
-    getPartByEmail(mail, (err, results) => {
-      if (err) throw err;
-      if (results) {
-     const result = (mdp==results.mdp);
-    if (result) {
-      results.password = undefined;
-      const jsontoken = sign({ result: results }, "amin1234", {expiresIn: "1h"});
+  getPartConfig: (req, res) => {
+    const id_part = req.params.id_part;
+    getPartConfig(id_part, (err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      if (results.length > 0) {
         return res.json({
-          id: results.id,
-          token: jsontoken
+          results
         });
       }
-      }
-      return res.status(401).json({
-        unauthorised:true
-      });
-      
-    });
-  }
-},
-getPartenaires: (req, res) => {
-  getPartenaires((err, results) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
-    return res.json({
-      success: 1,
-      data: results
-    });
-  });
-},
-
-getPartConfig: (req, res) => {
-  const id_part = req.params.id_part;
-  getPartConfig(id_part, (err, results) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
-    if (results.length >0) {
-      return res.json({
-       results
-      });
-    }
       return res.json({
         message: "Record not Found"
-    });
-  });
-},
-getNamePartById: (req, res) => {
-  const id_part = req.params.id_part;
-  getNamePartById(id_part, (err, results) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
-    if (results.length >0) {
-      return res.json({
-        data: results[0]
       });
-    }
+    });
+  },
+  getNamePartById: (req, res) => {
+    const id_part = req.params.id_part;
+    getNamePartById(id_part, (err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      if (results.length > 0) {
+        return res.json({
+          data: results[0]
+        });
+      }
       return res.json({
         success: 0,
         message: "Record not Found"
+      });
     });
-  });
-}
+  },
+  updatePart: (req, res) => {
+    const data = req.body;
+    updatePart(data, (err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      return res.json({
+        success: 1,
+        message: 'modification avec succées !!',
+        results
+      });
+    });
+  }
 }
 
 

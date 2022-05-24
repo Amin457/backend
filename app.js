@@ -12,7 +12,10 @@ const fileRouter = require("./api/files/file.router");
 const soapRouter = require("./api/soap/soap.router");
 const cadeauRouter = require("./api/cadeau/cadeau.router");
 const statRec = require("./api/statistique_reclamation/statRec.router");
-const notification = require("./api/notifications/notification.router")
+const statFeed = require("./api/statistique_feedback/statFeed.router");
+const notification = require("./api/notifications/notification.router");
+const admin = require("./api/Admin/admin.router")
+
 
 
 const session = require('express-session');
@@ -46,6 +49,9 @@ app.use("/api/soap",soapRouter);
 app.use("/api/cadeau",cadeauRouter);
 app.use("/api/statRec",statRec);
 app.use("/api/notification",notification);
+app.use("/api/admin",admin);
+app.use("/api/statFeed",statFeed);
+
 
 
 

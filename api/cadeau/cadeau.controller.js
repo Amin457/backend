@@ -51,7 +51,7 @@ getCadeauByIdPart: (req, res) => {
       }
      return res.status(200).json({
         success:1,
-        message: "vous avez gagner"
+        message: "vous avez gagné"
       });
     });
     conn.query(
