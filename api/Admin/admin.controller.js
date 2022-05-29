@@ -1,4 +1,4 @@
-const {getUserByUserEmail,getUsers,deleteUser,getPartenaire,deletePartenaire,create,insertConfig,ajouterBoutique,getPartenaireById} = require("./admin.service");
+const { getUserByUserEmail, getUsers, deleteUser, getPartenaire, deletePartenaire, create, insertConfig, updateConfig, ajouterBoutique, getPartenaireById, deleteBoutique ,getAllBoutique,getDemandePart,aprouverPartenaire,deleteDemande} = require("./admin.service");
 const { hashSync, genSaltSync, compareSync } = require("bcrypt");
 const { sign } = require("jsonwebtoken");
 const conn = require("../../config/database");
@@ -13,20 +13,20 @@ module.exports = {
       getUserByUserEmail(mail, (err, results) => {
         if (err) throw err;
         if (results) {
-       const result = (mdp==results.mdp);
-      if (result) {
-        results.password = undefined;
-        const jsontoken = sign({ result: results }, "amin1234", {expiresIn: "1h"});
-          return res.json({
-            id: results.id,
-            token: jsontoken
-          });
-        }
+          const result = (mdp == results.mdp);
+          if (result) {
+            results.password = undefined;
+            const jsontoken = sign({ result: results }, "amin1234", { expiresIn: "1h" });
+            return res.json({
+              id: results.id,
+              token: jsontoken
+            });
+          }
         }
         return res.status(401).json({
-          unauthorised:true
+          unauthorised: true
         });
-        
+
       });
     }
   },
@@ -79,7 +79,7 @@ module.exports = {
     const id = req.params.id;
     const etat = req.params.etat;
 
-    deleteUser(id,etat, (err, results) => {
+    deleteUser(id, etat, (err, results) => {
       if (err) {
         console.log(err);
         return;
@@ -100,7 +100,7 @@ module.exports = {
     const id = req.params.id;
     const etat = req.params.etat;
 
-    deletePartenaire(id,etat, (err, results) => {
+    deletePartenaire(id, etat, (err, results) => {
       if (err) {
         console.log(err);
         return;
@@ -136,7 +136,8 @@ module.exports = {
           });
         }
         return res.status(200).json({
-          success: 1
+          success: 1,
+          data: results
         });
       });
     }
@@ -144,7 +145,45 @@ module.exports = {
   },
   createConfig: (req, res) => {
     const body = req.body;
-       insertConfig(body,(err, results) => {
+
+    conn.query('select * from config where id_part=?', [body.id_part], (err, results, fields) => {
+      if (results.length > 0) {
+        updateConfig(body, (err, results) => {
+          if (err) {
+            console.log(err);
+            return res.status(500).json({
+              success: 0,
+              message: "Database connection errror"
+            });
+          }
+          return res.status(200).json({
+            success: 1,
+            message: "mise a jours effectué"
+          });
+        });
+      } else {
+        insertConfig(body, (err, results) => {
+          if (err) {
+            console.log(err);
+            return res.status(500).json({
+              success: 0,
+              message: "Database connection errror"
+            });
+          }
+          return res.status(200).json({
+            success: 1,
+            message: "insertion effectué"
+
+          });
+        });
+      }
+    })
+
+
+  },
+  ajouterBoutique: (req, res) => {
+    const body = req.body;
+    ajouterBoutique(body, (err, results) => {
       if (err) {
         console.log(err);
         return res.status(500).json({
@@ -157,21 +196,90 @@ module.exports = {
       });
     });
 
-},
-ajouterBoutique: (req, res) => {
-  const body = req.body;
-  ajouterBoutique(body,(err, results) => {
-    if (err) {
-      console.log(err);
-      return res.status(500).json({
-        success: 0,
-        message: "Database connection errror"
+  },
+  deleteBoutique : (req, res) => {
+    const id = req.params.id;
+    deleteBoutique(id, (err, results) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).json({
+          success: 0,
+          message: "Database connection errror"
+        });
+      }
+      return res.status(200).json({
+        message : results
       });
-    }
-    return res.status(200).json({
-      success: 1
     });
-  });
 
-}
+  },
+  getAllBoutique: (req, res) => {
+    const id = req.params.id_part;
+    getAllBoutique(id, (err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      if (!results) {
+        return res.json({
+          success: 0,
+          message: "Record not Found"
+        });
+      }else
+      return res.json({
+        success: 1,
+        data: results,
+      });
+    });
+  },
+  getDemandePart: (req, res) => {
+    getDemandePart((err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      return res.json({
+        success: 1,
+        data: results
+      });
+    });
+  },
+  aprouverPartenaire: (req, res) => {
+    const id = req.params.id;
+    aprouverPartenaire(id, (err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      if (!results) {
+        return res.json({
+          success: 0,
+          message: "Record Not Found"
+        });
+      }
+      return res.json({
+        success: 1,
+        message: "partenaire en etat desactivé"
+      });
+    });
+  },
+  deleteDemande: (req, res) => {
+    const id = req.params.id;
+    deleteDemande(id, (err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      if (!results) {
+        return res.json({
+          success: 0,
+          message: "Record Not Found"
+        });
+      }
+      return res.json({
+        success: 1,
+        message: "demande suppimer"
+      });
+    });
+  }
 }

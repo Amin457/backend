@@ -1,4 +1,4 @@
-const { create, getUserByUserEmail, getUserByUserId, updateUser, registerNotif,deleteToken } = require("./user.service");
+const { create, getUserByUserEmail, getUserByUserId, updateUser, registerNotif, deleteToken } = require("./user.service");
 const { hashSync, genSaltSync, compareSync } = require("bcrypt");
 const { sign } = require("jsonwebtoken");
 const conn = require("../../config/database");
@@ -94,15 +94,6 @@ module.exports = {
   },
   registerNotif: (req, res) => {
     const body = req.body;
-
-    /* conn.query('select * from notification where token=?' ,[body.token] ,(err, results, fields) => {
-       if (results.length >0) {
-         return res.status(500).json({
-           success: 0,
-           message: "déja enrigistrer"
-         });
-       }*/
-
     registerNotif(body, (err, results) => {
       if (err) {
         console.log(err);

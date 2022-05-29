@@ -70,6 +70,34 @@ module.exports = {
         return callBack(null, results[0]);
       }
     );
+  },
+  create: (data, callBack) => {
+    conn.query('insert into partenaire(societe,mail,Fax,tel,codePostal,img,etat) values(?,?,?,?,?,?,2)',
+      [
+        data.societe,
+        data.mail,
+        data.Fax,
+        data.tel,
+        data.codePostal,
+        data.img
+
+      ],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        conn.query('select id_part from partenaire where mail =?',
+          [
+            data.mail
+          ],
+          (error, results, fields) => {
+
+
+            return callBack(null, results);
+          }
+        );
+      }
+    );
   }
 
 };

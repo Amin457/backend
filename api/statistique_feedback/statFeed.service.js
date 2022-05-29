@@ -24,10 +24,10 @@ module.exports = {
           }
         );
       },
-      Reponse: (data, callBack) => {
+      nbrRep: (data, callBack) => {
         conn.query(
-          `SELECT reponse.reponse ,feedback.id_question , COUNT(feedback.id_rep) as nbrRep from reponse,question,feedback where feedback.id_question=question.id_question and reponse.id_rep=feedback.id_rep and feedback.id_part=? and feedback.date>=? and feedback.date<=? group by id_question;`,
-          [data.id_part, data.dateDebut, data.dateFin],
+          `SELECT reponse.reponse, feedback.id_rep , COUNT(feedback.id_rep) as nbr FROM feedback,reponse WHERE feedback.id_rep=reponse.id_rep and id_question=? and feedback.id_part=? and feedback.date>=? and feedback.date<=? GROUP by id_rep;`,
+          [data.id_question ,data.id_part, data.dateDebut, data.dateFin],
           (error, results, fields) => {
             if (error) {
               callBack(error);

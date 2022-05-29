@@ -11,6 +11,6 @@ const args = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/e
     console.log(client.describe());
       client.HelloWorld(args,function(err, result) {
           console.log(result);
-         // console.log(err);
+         
       });
   });

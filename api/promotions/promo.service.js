@@ -21,7 +21,7 @@ module.exports = {
   },
   getAllPromos: callBack => {
     conn.query(
-      `select * from promotion ORDER BY date_debut desc`,
+      `select promotion.id_promo,promotion.image,promotion.nom,promotion.id_part,promotion.date_debut,promotion.date_fin,promotion.description from promotion,partenaire where promotion.id_part=partenaire.id_part and partenaire.etat=1 ORDER BY date_debut desc`,
       [],
       (error, results, fields) => {
         if (error) {

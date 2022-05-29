@@ -1,5 +1,7 @@
-const { insertConfig, getPartByEmail, getPartenaires, getPartConfig, getNamePartById, updatePart } = require("./partenaire.service");
+const { insertConfig, getPartByEmail, getPartenaires, getPartConfig, getNamePartById, updatePart,create } = require("./partenaire.service");
 const { sign } = require("jsonwebtoken");
+const conn = require("../../config/database");
+
 module.exports = {
 
   login: (req, res) => {
@@ -87,6 +89,32 @@ module.exports = {
         results
       });
     });
+  },
+  demande : (req, res) => {
+    const body = req.body;
+    conn.query('select mail from partenaire where mail=?', [body.mail], (err, results, fields) => {
+      if (results.length > 0) {
+        return res.status(500).json({
+          success: 0,
+          message: "email alredy in use"
+        });
+      }
+
+      create(body, (err, results) => {
+        if (err) {
+          console.log(err);
+          return res.status(500).json({
+            success: 0,
+            message: "Database connection errror"
+          });
+        }
+        return res.status(200).json({
+          success: 1,
+          data: results
+        });
+      });
+    }
+    );
   }
 }
 
