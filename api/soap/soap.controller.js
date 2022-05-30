@@ -17,7 +17,7 @@ module.exports = {
       if (err) {
         console.log(err);
         return res.status(500).json({
-          message: "impossible de trouver la carte " + cardId
+          message: "Impossible de trouver la carte " + cardId
         });
       } else {
         var data = JSON.parse(phpResponse).GetLoyaltyCardResult;
@@ -30,14 +30,14 @@ module.exports = {
                 [data.Id, id_part, id]);
 
               return res.json({
-                message: "carte ajouté avec succée",
+                message: "Carte ajoutée avec succès",
                 data
               })
 
             } else {
 
               return res.json({
-                message: "carte déja existe",
+                message: "Carte déjà existée",
                 data
               })
 
@@ -45,7 +45,7 @@ module.exports = {
           });
         } else {
           return res.json({
-            message: "cette carte n'appartient a cette boutique",
+            message: "Cette carte n'appartienne pas à ce partenaire",
           })
         }
 
@@ -81,14 +81,14 @@ module.exports = {
               [data, id_part, clientId]);
             return res.json({
               data,
-              message: "carte créer avec succées",
+              message: "Carte crée avec succès",
 
             });
           }
         });
       } else {
         return res.json({
-          message: "vous avez déja une carte avec cette boutique",
+          message: "Vous avez déja une carte avec ce partenaire",
         })
       }
 

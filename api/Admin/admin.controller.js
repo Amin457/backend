@@ -1,4 +1,4 @@
-const { getUserByUserEmail, getUsers, deleteUser, getPartenaire, deletePartenaire, create, insertConfig, updateConfig, ajouterBoutique, getPartenaireById, deleteBoutique ,getAllBoutique,getDemandePart,aprouverPartenaire,deleteDemande} = require("./admin.service");
+const { getUserByUserEmail, getUsers, deleteUser, getPartenaire, deletePartenaire, create, insertConfig, updateConfig, ajouterBoutique, getPartenaireById, deleteBoutique ,getAllBoutique,getDemandePart,aprouverPartenaire,deleteDemande,statistiquePartenaire,statistiqueUser,statistiqueCarte,statistiqueDashbord} = require("./admin.service");
 const { hashSync, genSaltSync, compareSync } = require("bcrypt");
 const { sign } = require("jsonwebtoken");
 const conn = require("../../config/database");
@@ -281,5 +281,57 @@ module.exports = {
         message: "demande suppimer"
       });
     });
+  },////////dashbord
+  statistiquePartenaire: (req, res) => {
+    const body = req.body;
+    statistiquePartenaire(body, (err, results) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    return res.json({
+      success: 1,
+      data: results
+    });
+  });
+},
+statistiqueUser: (req, res) => {
+  const body = req.body;
+  statistiqueUser(body, (err, results) => {
+  if (err) {
+    console.log(err);
+    return;
   }
+  return res.json({
+    success: 1,
+    data: results
+  });
+});
+},
+statistiqueCarte: (req, res) => {
+  statistiqueCarte((err, results) => {
+  if (err) {
+    console.log(err);
+    return;
+  }
+  return res.json({
+    success: 1,
+    data: results
+  });
+});
+},
+statistiqueDashbord: (req, res) => {
+  statistiqueDashbord((err, results,results2,results3) => {
+  if (err) {
+    console.log(err);
+    return;
+  }
+  return res.json({
+    success: 1,
+    data: results,
+    data1: results2,
+    data2 : results3
+  });
+});
+}
 }

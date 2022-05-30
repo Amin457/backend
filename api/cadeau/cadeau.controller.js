@@ -82,7 +82,7 @@ module.exports = {
 
           return res.status(200).json({
             success: 0,
-            message: "ressayer dans ",
+            message: "Ressayer dans ",
             results1
           });
 

@@ -1,4 +1,4 @@
-const { login, getUsers, deleteUser, getPartenaire, deletePartenaire, createPartenaire, createConfig, ajouterBoutique, getPartenaireById, deleteBoutique, getAllBoutique, getDemandePart, aprouverPartenaire ,deleteDemande} = require("./admin.controller");
+const { login, getUsers, deleteUser, getPartenaire, deletePartenaire, createPartenaire, createConfig, ajouterBoutique, getPartenaireById, deleteBoutique, getAllBoutique, getDemandePart, aprouverPartenaire ,deleteDemande,statistiquePartenaire,statistiqueUser,statistiqueCarte,statistiqueDashbord} = require("./admin.controller");
 const router = require("express").Router();
 
 
@@ -18,4 +18,11 @@ router.get("/getAllBoutique/:id_part", getAllBoutique);
 router.get("/getDemandePart", getDemandePart);
 router.put("/aprouverPartenaire/:id", aprouverPartenaire);
 router.delete("/deleteDemande/:id", deleteDemande);
+//dashbord
+router.post("/statistiquePartenaire", statistiquePartenaire);
+router.post("/statistiqueUser", statistiqueUser);
+router.get("/statistiqueCarte", statistiqueCarte);
+router.get("/statistiqueDashbord", statistiqueDashbord);
+
+
 module.exports = router;

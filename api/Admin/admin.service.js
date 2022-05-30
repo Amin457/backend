@@ -256,5 +256,67 @@ module.exports = {
       }
     );
 
+  },
+  statistiquePartenaire  : (data, callBack) => {
+    conn.query(
+      `SELECT MONTH(DATE_FORMAT(partenaire.createdAt,'%Y/%m/%d')) as monthnb,MONTHNAME(DATE_FORMAT(partenaire.createdAt,'%Y/%m/%d')) as month,YEAR(DATE_FORMAT(partenaire.createdAt,'%Y/%m/%d')) as year,COUNT(*)as nbrTotal from partenaire
+       WHERE partenaire.createdAt>=? and partenaire.createdAt<=? GROUP BY MONTH(DATE_FORMAT(partenaire.createdAt,'%Y/%m/%d')) order by partenaire.createdAt ;`,
+      [data.dateDebut,data.dateFin],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results);
+      }
+    );
+  },
+  statistiqueUser : (data, callBack) => {
+    conn.query(
+      `SELECT MONTH(DATE_FORMAT(client.createdAt,'%Y/%m/%d')) as monthnb,MONTHNAME(DATE_FORMAT(client.createdAt,'%Y/%m/%d')) as month,YEAR(DATE_FORMAT(client.createdAt,'%Y/%m/%d')) as year,COUNT(*)as nbrTotal from client
+      WHERE client.createdAt>=? and client.createdAt<=? GROUP BY MONTH(DATE_FORMAT(client.createdAt,'%Y/%m/%d')) order by client.createdAt;`,
+      [data.dateDebut,data.dateFin],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results);
+      }
+    );
+  },
+  statistiqueCarte : (callBack) => {
+    conn.query(
+      `SELECT count(carte.id_carte) as nbr , partenaire.societe from partenaire,carte WHERE carte.id_part=partenaire.id_part GROUP by partenaire.societe;`,
+      [],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results);
+      }
+    );
+  },
+  statistiqueDashbord: (callBack) => {
+    conn.query(
+      `SELECT count(*) as nbrClient from client;`,
+      [],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        conn.query(
+          `SELECT count(*) as nbrPart FROM partenaire where etat=1;`,[],
+          (error, results2, fields) => {
+         
+        conn.query(
+          `SELECT count(*) as nbrPartenariat FROM partenaire where etat=2;`,[],
+          (error, results3, fields) => {
+        
+        return callBack(null, results,results2,results3);
+      }
+    );///
+  }
+  );
+  }
+  );
   }
 };

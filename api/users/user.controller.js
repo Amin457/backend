@@ -87,7 +87,7 @@ module.exports = {
       }
       return res.json({
         success: 1,
-        message: 'modification avec succées !!',
+        message: 'Modification avec succès',
         results
       });
     });

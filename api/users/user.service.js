@@ -3,13 +3,14 @@ const conn = require("../../config/database");
 
 module.exports = {
   create: (data, callBack) => {
-    conn.query('insert into client(Nom,Prenom,mail,mdp,dateNaissance) values(?,?,?,?,?)',
+    conn.query('insert into client(Nom,Prenom,mail,mdp,dateNaissance,CIN) values(?,?,?,?,?,?)',
       [
         data.Nom,
         data.Prenom,
         data.mail,
         data.mdp,
-        data.dateNaissance
+        data.dateNaissance,
+        data.CIN
       ],
       (error, results, fields) => {
         if (error) {
@@ -22,7 +23,7 @@ module.exports = {
   },
   getUserByUserId: (id, callBack) => {
     conn.query(
-      `select Nom, mail from client where id = ?`,
+      `select * from client where id = ?`,
       [id],
       (error, results, fields) => {
         if (error) {
@@ -46,7 +47,7 @@ module.exports = {
   },
   updateUser: (data, callBack) => {
     conn.query(
-      `update client set Nom=?,Prenom=? ,mail=?, mdp=?,dateNaissance=?,img=? where id=?`,
+      `update client set Nom=?,Prenom=? ,mail=?, mdp=?,dateNaissance=?,img=?,CIN=? where id=?`,
       [
         data.Nom,
         data.Prenom,
@@ -54,6 +55,7 @@ module.exports = {
         data.mdp,
         data.dateNaissance,
         data.img,
+        data.CIN,
         data.id
       ],
       (error, results, fields) => {
