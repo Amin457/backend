@@ -16,7 +16,7 @@ module.exports = {
   },
   getUsers: callBack => {
     conn.query(
-      `select id, Nom,Prenom, mail,etat,img from client`,
+      `select id, Nom,Prenom, mail,etat,createdAt,img from client`,
       [],
       (error, results, fields) => {
         if (error) {
@@ -135,7 +135,7 @@ module.exports = {
     );
   },
   updateConfig: (data, callBack) => {
-    conn.query('update config set adresseIP=?,env=?,storeID=?,dbId=? where id_part=?',
+    conn.query('update partenaire set adresseIP=?,env=?,storeID=?,dbId=? where id_part=?',
       [
         data.adresseIP,
         data.env,
@@ -154,7 +154,7 @@ module.exports = {
     );
   }
   ,
-  insertConfig: (data, callBack) => {
+/*  insertConfig: (data, callBack) => {
     conn.query('insert into config(adresseIP,env,storeID,dbId,id_part) values(?,?,?,?,?)',
       [
         data.adresseIP,
@@ -172,9 +172,9 @@ module.exports = {
         return callBack(null, results);
       }
     );
-  },
+  },*/
   ajouterBoutique: (data, callBack) => {
-    conn.query('insert into localisation(id_part,boutique) values(?,?)',
+    conn.query('insert into boutique(id_part,boutique) values(?,?)',
       [
         data.id_part,
         data.boutique
@@ -199,7 +199,7 @@ module.exports = {
           callBack(error);
         }
 
-        conn.query('DELETE from localisation WHERE id=?;', [id], (err, results, fields) => {
+        conn.query('DELETE from boutique WHERE id=?;', [id], (err, results, fields) => {
         });
 
         return callBack(null, "boutique supprimé avec sucées");
@@ -209,7 +209,7 @@ module.exports = {
   },
   getAllBoutique: (id, callBack) => {
     conn.query(
-      `select * from localisation where id_part=?`,
+      `select * from boutique where id_part=?`,
       [id],
       (error, results, fields) => {
         if (error) {

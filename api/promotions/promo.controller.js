@@ -1,4 +1,4 @@
-const { getAllPromos, getPromoByPart,Create } = require("./promo.service");
+const { getAllPromos, getPromoByPart, Create, deletepromo, getPromoById,updatePromo } = require("./promo.service");
 const conn = require("../../config/database");
 
 
@@ -39,6 +39,45 @@ module.exports = {
       return res.json({
         success: 1,
         data: results
+      });
+    });
+  },
+  deletepromo: (req, res) => {
+    const id = req.params.id;
+    deletepromo(id, (err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      return res.json({
+        success: 1
+      });
+    });
+
+  },
+  getPromoById: (req, res) => {
+    const id = req.params.id;
+    getPromoById(id, (err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      return res.json({
+        success: 1,
+        data: results
+      });
+    });
+  },
+  updatePromo: (req, res) => {
+    const body = req.body;
+    updatePromo(body, (err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      return res.json({
+        success: 1,
+        message: 'Modification avec succès'
       });
     });
   }

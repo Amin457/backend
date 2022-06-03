@@ -14,7 +14,7 @@ module.exports = {
       });
     });
   },
-  statReponse: (req, res) => {
+  Question: (req, res) => {
     const data = req.body;
 
     Question(data, (err, results) => {

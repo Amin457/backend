@@ -69,7 +69,7 @@ module.exports = {
   getPermissionJeux: (req, res) => {
     const id = req.params.id;
     const id_part = req.params.id_part;
-    conn.query('select date,recompense.id from recompense,cadeau,jeux_partenaire where recompense.id_cadeau=cadeau.id_cadeau and id_client=? and DATEDIFF( ?, date )<7 and cadeau.id_jeu_part=jeux_partenaire.id_jeu_part and jeux_partenaire.id_part=?', [id, newdate, id_part], (err, results, fields) => {
+    conn.query('select date,tour.id from tour,cadeau,jeux_partenaire where tour.id_cadeau=cadeau.id_cadeau and id_client=? and DATEDIFF( ?, date )<7 and cadeau.id_jeu_part=jeux_partenaire.id_jeu_part and jeux_partenaire.id_part=?', [id, newdate, id_part], (err, results, fields) => {
       if (results.length == 0) {
         return res.status(200).json({
           success: 1
@@ -77,7 +77,7 @@ module.exports = {
 
       } else {
 
-        conn.query('select DATEDIFF( ?,recompense.date ) as a from recompense,cadeau,jeux_partenaire where recompense.id_cadeau=cadeau.id_cadeau and id_client=? and cadeau.id_jeu_part=jeux_partenaire.id_jeu_part and jeux_partenaire.id_part=? and DATEDIFF( ?, date )<7', [newdate, id, id_part, newdate], (err, results1, fields) => {
+        conn.query('select DATEDIFF( ?,tour.date ) as a from tour,cadeau,jeux_partenaire where tour.id_cadeau=cadeau.id_cadeau and id_client=? and cadeau.id_jeu_part=jeux_partenaire.id_jeu_part and jeux_partenaire.id_part=? and DATEDIFF( ?, date )<7', [newdate, id, id_part, newdate], (err, results1, fields) => {
           console.log(results1);
 
           return res.status(200).json({

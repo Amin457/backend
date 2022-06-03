@@ -1,4 +1,4 @@
-const {createFeed,getAllQuest,insertQuestion,insertReponse,getReponse,getFeed} = require("./feedback.controller");
+const {createFeed,getAllQuest,insertQuestion,insertReponse,getReponse,getFeed,deleteQuestion} = require("./feedback.controller");
 const router = require("express").Router();
 
 router.put("/",createFeed);
@@ -8,7 +8,7 @@ router.post("/question/insertQuestion",insertQuestion);
 router.post("/question/insertReponse",insertReponse);
 router.get("/question/getReponse/:id_question",getReponse);
 router.get("/getFeed/:id_part",getFeed);
-
+router.delete("/:id_question",deleteQuestion);
 
 
 

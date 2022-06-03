@@ -2,7 +2,7 @@ const conn = require("../../config/database");
 module.exports = {
       getNbQualite: (data, callBack) => {
         conn.query(
-          `select count(*) as rec_accueil from reclamation,localisation where reclamation.sujet_rec='qualité' and reclamation.id_boutique=localisation.id and localisation.id_part =? and reclamation.date_rec>=? and reclamation.date_rec<=?;`,
+          `select count(*) as rec_accueil from reclamation,boutique where reclamation.sujet_rec='qualité' and reclamation.id_boutique=boutique.id and boutique.id_part =? and reclamation.date_rec>=? and reclamation.date_rec<=?;`,
           [data.id_part, data.dateDebut, data.dateFin],
           (error, results, fields) => {
             if (error) {
@@ -14,7 +14,7 @@ module.exports = {
       },
       getNbAccueil: (data, callBack) => {
         conn.query(
-          `select count(*) as rec_accueil from reclamation,localisation where reclamation.sujet_rec='accueil' and reclamation.id_boutique=localisation.id and localisation.id_part =? and reclamation.date_rec>=? and reclamation.date_rec<=?;`,
+          `select count(*) as rec_accueil from reclamation,boutique where reclamation.sujet_rec='accueil' and reclamation.id_boutique=boutique.id and boutique.id_part =? and reclamation.date_rec>=? and reclamation.date_rec<=?;`,
           [data.id_part, data.dateDebut, data.dateFin],
           (error, results, fields) => {
             if (error) {
@@ -26,7 +26,7 @@ module.exports = {
       },
       getNbPrix: (data, callBack) => {
         conn.query(
-          `select count(*) as rec_accueil from reclamation,localisation where reclamation.sujet_rec='prix' and reclamation.id_boutique=localisation.id and localisation.id_part =? and reclamation.date_rec>=? and reclamation.date_rec<=?;`,
+          `select count(*) as rec_accueil from reclamation,boutique where reclamation.sujet_rec='prix' and reclamation.id_boutique=boutique.id and boutique.id_part =? and reclamation.date_rec>=? and reclamation.date_rec<=?;`,
           [data.id_part, data.dateDebut, data.dateFin],
           (error, results, fields) => {
             if (error) {
@@ -38,7 +38,7 @@ module.exports = {
       },
       getNbPersonel: (data, callBack) => {
         conn.query(
-          `select count(*) as rec_accueil from reclamation,localisation where reclamation.sujet_rec='personnel' and reclamation.id_boutique=localisation.id and localisation.id_part =? and reclamation.date_rec>=? and reclamation.date_rec<=?`,
+          `select count(*) as rec_accueil from reclamation,boutique where reclamation.sujet_rec='personnel' and reclamation.id_boutique=boutique.id and boutique.id_part =? and reclamation.date_rec>=? and reclamation.date_rec<=?`,
           [data.id_part, data.dateDebut, data.dateFin],
           (error, results, fields) => {
             if (error) {
@@ -51,8 +51,8 @@ module.exports = {
       getNbRecParMoix : (data, callBack) => {
         conn.query(
           `SELECT MONTH(DATE_FORMAT(rec.date_rec,'%Y/%m/%d')) as monthnb,MONTHNAME(DATE_FORMAT(rec.date_rec,'%Y/%m/%d')) as month,YEAR(DATE_FORMAT(rec.date_rec,'%Y/%m/%d')) as year,COUNT(*)as nbrTotal 
-          from reclamation as rec,localisation as loc
-          WHERE loc.id_part=? and rec.id_boutique=loc.id and rec.date_rec>=? and rec.date_rec<= ? 
+          from reclamation as rec,boutique as boutique
+          WHERE boutique.id_part=? and rec.id_boutique=boutique.id and rec.date_rec>=? and rec.date_rec<= ? 
           GROUP BY MONTH(DATE_FORMAT(rec.date_rec,'%Y/%m/%d'));`,
           [data.id_part, data.dateDebut, data.dateFin],
           (error, results, fields) => {
@@ -65,9 +65,9 @@ module.exports = {
       },
       getNbRecParBoutique  : (data, callBack) => {
         conn.query(
-          `select loc.id_part,loc.boutique ,count(*) as rec_boutique
-           from reclamation as rec,localisation as loc
-           where rec.date_rec>=? and rec.date_rec<=? and rec.id_boutique=loc.id and loc.id_part=? group by loc.id;`,
+          `select boutique.id_part,boutique.boutique ,count(*) as rec_boutique
+           from reclamation as rec,boutique as boutique
+           where rec.date_rec>=? and rec.date_rec<=? and rec.id_boutique=boutique.id and boutique.id_part=? group by boutique.id;`,
           [data.dateDebut,data.dateFin,data.id_part],
           (error, results, fields) => {
             if (error) {

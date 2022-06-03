@@ -1,4 +1,4 @@
-const { insertFeed, updateFeed, getAllQuest, getAllRep, insertQuestion, insertReponse, getReponse, getFeed } = require("./feedback.service");
+const { insertFeed, updateFeed, getAllQuest, getAllRep, insertQuestion, insertReponse, getReponse, getFeed,deleteQuestion } = require("./feedback.service");
 const conn = require("../../config/database");
 
 
@@ -129,13 +129,6 @@ module.exports = {
   getReponse: (req, res) => {
     const id_question = req.params.id_question;
     getReponse(id_question, (err, results) => {
-
-      /*if (results[0].length=0) {
-        return res.json({
-          success: 0,
-          message: "record not found"
-        });
-      }*/
       return res.json({
         success: 1,
         data: results
@@ -152,6 +145,19 @@ module.exports = {
       });
 
     });
+  },
+  deleteQuestion: (req, res) => {
+    const id_question = req.params.id_question;
+    deleteQuestion(id_question, (err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      return res.json({
+        success: 1
+      });
+    });
+
   }
 }
 

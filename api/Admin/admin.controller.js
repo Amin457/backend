@@ -145,9 +145,6 @@ module.exports = {
   },
   createConfig: (req, res) => {
     const body = req.body;
-
-    conn.query('select * from config where id_part=?', [body.id_part], (err, results, fields) => {
-      if (results.length > 0) {
         updateConfig(body, (err, results) => {
           if (err) {
             console.log(err);
@@ -161,25 +158,6 @@ module.exports = {
             message: "mise a jours effectué"
           });
         });
-      } else {
-        insertConfig(body, (err, results) => {
-          if (err) {
-            console.log(err);
-            return res.status(500).json({
-              success: 0,
-              message: "Database connection errror"
-            });
-          }
-          return res.status(200).json({
-            success: 1,
-            message: "insertion effectué"
-
-          });
-        });
-      }
-    })
-
-
   },
   ajouterBoutique: (req, res) => {
     const body = req.body;

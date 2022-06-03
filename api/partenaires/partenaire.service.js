@@ -15,7 +15,7 @@ module.exports = {
     );
   },
   getPartConfig: (id_part, callBack) => {
-    conn.query(`select * from config where id_part=?`,
+    conn.query(`select adresseIP,env,storeID,dbId from partenaire where id_part=?`,
       [id_part],
       (error, results, fields) => {
         if (error) {

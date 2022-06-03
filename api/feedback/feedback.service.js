@@ -38,33 +38,6 @@ module.exports = {
       }
     );
   },
-  /* getAllQuest: (id_part,callBack) => {
-      conn.query(`select distinct question.description , question.id_question from question,reponse where question.id_question=reponse.id_question and question.id_part=?;`,
-      [id_part],
-          (error, results, fields) => {
-            if (error) {
-              callBack(error);
-            }
-      return callBack(null,results);
-
-            
-          }
-        );
-      } ,
-      getAllRep: (id_part,callBack) => {
-        conn.query(`select reponse.reponse , reponse.id_rep, question.id_question from reponse,question where reponse.id_question=question.id_question and question.id_part=?;`,
-        [id_part],
-            (error, results1, fields) => {
-              if (error) {
-                callBack(error);
-              }
-             
-            
- 
-                return callBack(null,results1);
-    });
-              
-            },*/
   getAllRep: (id_part, callBack) => {
     conn.query(`select reponse.reponse , reponse.id_rep, question_reponse.id_question from reponse,question,question_reponse where question.id_question=question_reponse.id_question and question_reponse.id_rep=reponse.id_rep and question.id_part=?;`,
       [id_part],
@@ -149,6 +122,31 @@ module.exports = {
         return callBack(null, results);
       });
 
+  },
+  deleteQuestion: (id_question, callBack) => {
+    conn.query(
+      'DELETE FROM feedback WHERE id_question=?',
+      [
+        id_question
+      ],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        conn.query(
+          'DELETE FROM question_reponse WHERE id_question=?;',
+          [
+            id_question
+          ]);
+          conn.query(
+            'DELETE FROM question WHERE id_question=?',
+            [
+              id_question
+            ]);
+        return callBack(null, results);
+      }
+    );
   }
+
 
 };

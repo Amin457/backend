@@ -34,7 +34,7 @@ module.exports = {
     );
   },
   insertRecompense: (data, callBack) => {
-    conn.query('insert into recompense (id_client,id_cadeau) values(?,?)',
+    conn.query('insert into tour (id_client,id_cadeau) values(?,?)',
       [
         data.id_client,
         data.id_cadeau,
@@ -50,9 +50,9 @@ module.exports = {
 
   },
   getRecompense: (id, id_part, callBack) => {
-    conn.query(`select cadeau.description,partenaire.societe ,recompense.date  from cadeau,partenaire,recompense,jeux_partenaire
-             where recompense.id_cadeau=cadeau.id_cadeau and recompense.id_client=?
-              and cadeau.id_jeu_part=jeux_partenaire.id_jeu_part and jeux_partenaire.id_part=partenaire.id_part and jeux_partenaire.id_part=? and cadeau.description<>"perdu" ORDER BY recompense.date desc `,
+    conn.query(`select cadeau.description,partenaire.societe ,tour.date  from cadeau,partenaire,tour,jeux_partenaire
+             where tour.id_cadeau=cadeau.id_cadeau and tour.id_client=?
+              and cadeau.id_jeu_part=jeux_partenaire.id_jeu_part and jeux_partenaire.id_part=partenaire.id_part and jeux_partenaire.id_part=? and cadeau.description<>"perdu" ORDER BY tour.date desc `,
       [id, id_part],
       (error, results, fields) => {
         if (error) {
@@ -123,8 +123,8 @@ module.exports = {
 
   },
   getGagnants: (id_part, callBack) => {
-    conn.query(`select cadeau.description,recompense.date,client.Nom,client.Prenom,client.mail  from cadeau,partenaire,recompense,jeux_partenaire,client
-                 where recompense.id_cadeau=cadeau.id_cadeau and recompense.id_client=client.id
+    conn.query(`select cadeau.description,tour.date,client.Nom,client.Prenom,client.mail  from cadeau,partenaire,tour,jeux_partenaire,client
+                 where tour.id_cadeau=cadeau.id_cadeau and tour.id_client=client.id
                   and cadeau.id_jeu_part=jeux_partenaire.id_jeu_part and jeux_partenaire.id_part=partenaire.id_part and jeux_partenaire.id_part=?`,
       [id_part],
       (error, results, fields) => {

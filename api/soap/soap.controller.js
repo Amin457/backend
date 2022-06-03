@@ -11,7 +11,8 @@ module.exports = {
 
 
     var runner = require("child_process");
-    var phpScriptPath = "phpScript/GetLoyaltyCard.php";
+    var phpScriptPath = "api/soap/GetLoyaltyCard.php";
+
     var argsString = cardId + "," + dbId;
     runner.exec("php " + phpScriptPath + " " + argsString, function (err, phpResponse, stderr) {
       if (err) {
@@ -62,31 +63,30 @@ module.exports = {
     const id_part = req.body.id_part;
 
     var runner = require("child_process");
-    var phpScriptPath = "phpScript/createCard.php";
+    //var phpScriptPath = "phpScript/createCard.php";
+    var phpScriptPath = "api/soap/createCard.php";
     var argsString = client_ref + "," + storeId + "," + dbId;
 
     conn.query('select * from carte where id_client=? and id_part=?', [clientId, id_part], (err, results, fields) => {
-      if (results.length == 0) {
+      if (results.length==0) {
+        
         runner.exec("php " + phpScriptPath + " " + argsString, function (err, phpResponse, stderr) {
 
           if (err) {
             return res.status(500).json({
               message: err.message
             });
-          } else {
-            var data = JSON.parse(phpResponse).CreateLoyaltyCardResult;
-            conn.query(
-              `INSERT INTO carte (num_carte,id_part,id_client)
-                  VALUES (?,?,?);`,
-              [data, id_part, clientId]);
-            return res.json({
-              data,
-              message: "Carte crée avec succès",
-
-            });
           }
+            var data = JSON.parse(phpResponse).CreateLoyaltyCardResult;
+             conn.query(
+               `INSERT INTO carte (id_client,id_part,client_ref,num_carte) VALUES (?,?,?,?);`,
+                [clientId, id_part,client_ref, data]);
         });
-      } else {
+        return res.json({
+          message: "Carte crée avec succès",
+
+        });
+      }else{
         return res.json({
           message: "Vous avez déja une carte avec ce partenaire",
         })
@@ -111,30 +111,22 @@ module.exports = {
     const BirthDateMonth=req.body.BirthDateMonth;
     const BirthDateYear=req.body.BirthDateYear;
     var runner = require("child_process");
-    var phpScriptPath = "phpScript/createClient.php";
+    var phpScriptPath = "api/soap/createClient.php";
+
     var argsString = firstName +","+lastName+"," +email+","+storeId+","+BirthDateDay+","+BirthDateMonth+","+BirthDateYear+","+CustomerId+","+ dbId;
 
 
-    conn.query('select * from clientele where id_client=? and id_part=?', [id_client, id_part], (err, results, fields) => {
-      if (results.length == 0) {
+    conn.query('select * from carte where id_client=? and id_part=?', [id_client, id_part], (err, results, fields) => {
+      if (results.length==0) {
 
         runner.exec("php " + phpScriptPath + " " + argsString, function (err, phpResponse, stderr) {
         
           if (err) {
-            console.log("jjjjjjjjjjjjjjjj", phpResponse)
             return res.status(500).json({
               message: err.message
             });
           } else {
-
-            //////////
-            console.log("jjjjjjjjjjjjjjjj", phpResponse)
             var data = JSON.parse(phpResponse).AddNewCustomerResult;
-            //////
-            conn.query(
-              `INSERT INTO clientele (id_client,id_part,client_ref)
-                          VALUES (?,?,?);`,
-              [id_client, id_part, data]);
             return res.json({
               message: "client ajouté avec succes",
               data
@@ -162,7 +154,8 @@ module.exports = {
     const dbId = req.body.dbId;
 
     var runner = require("child_process");
-    var phpScriptPath = "phpScript/getLoyaltyPoints.php";
+    var phpScriptPath = "api/soap/getLoyaltyPoints.php";
+
     var argsString = cardId + "," + dbId;
     runner.exec("php " + phpScriptPath + " " + argsString, function (err, phpResponse, stderr) {
       if (err) {
