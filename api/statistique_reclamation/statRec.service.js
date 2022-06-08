@@ -53,7 +53,7 @@ module.exports = {
           `SELECT MONTH(DATE_FORMAT(rec.date_rec,'%Y/%m/%d')) as monthnb,MONTHNAME(DATE_FORMAT(rec.date_rec,'%Y/%m/%d')) as month,YEAR(DATE_FORMAT(rec.date_rec,'%Y/%m/%d')) as year,COUNT(*)as nbrTotal 
           from reclamation as rec,boutique as boutique
           WHERE boutique.id_part=? and rec.id_boutique=boutique.id and rec.date_rec>=? and rec.date_rec<= ? 
-          GROUP BY MONTH(DATE_FORMAT(rec.date_rec,'%Y/%m/%d'));`,
+          GROUP BY MONTH(DATE_FORMAT(rec.date_rec,'%Y/%m/%d')),YEAR(DATE_FORMAT(rec.date_rec,'%Y/%m/%d')) order by DATE_FORMAT(rec.date_rec,'%Y/%m/%d');`,
           [data.id_part, data.dateDebut, data.dateFin],
           (error, results, fields) => {
             if (error) {
@@ -69,6 +69,21 @@ module.exports = {
            from reclamation as rec,boutique as boutique
            where rec.date_rec>=? and rec.date_rec<=? and rec.id_boutique=boutique.id and boutique.id_part=? group by boutique.id;`,
           [data.dateDebut,data.dateFin,data.id_part],
+          (error, results, fields) => {
+            if (error) {
+              callBack(error);
+            }
+            return callBack(null, results);
+          }
+        );
+      },
+      statSemaine  : (data, callBack) => {
+        conn.query(
+          `SELECT (DATE_FORMAT(rec.date_rec,'%Y/%m/%d')) as nDay , DAYNAME(DATE_FORMAT(rec.date_rec,'%Y/%m/%d')) as day,COUNT(*)as nbrTotal 
+          from reclamation as rec,boutique as boutique
+          WHERE boutique.id_part=? and rec.id_boutique=boutique.id and rec.date_rec>=? and rec.date_rec<=?
+          GROUP BY DAY(DATE_FORMAT(rec.date_rec,'%Y/%m/%d'));`,
+          [data.id_part, data.dateDebut, data.dateFin],
           (error, results, fields) => {
             if (error) {
               callBack(error);

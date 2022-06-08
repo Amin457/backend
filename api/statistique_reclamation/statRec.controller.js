@@ -1,4 +1,4 @@
-const {getNbQualite,getNbPrix,getNbAccueil,getNbPersonel,getNbRecParMoix,getNbRecParBoutique} = require("./statRec.service");
+const {getNbQualite,getNbPrix,getNbAccueil,getNbPersonel,getNbRecParMoix,getNbRecParBoutique,statSemaine} = require("./statRec.service");
 
 module.exports = {
 getNbQualite: (req, res) => {
@@ -80,5 +80,18 @@ getNbRecParBoutique: (req, res) => {
       data: results
     });
   });
+},
+statSemaine: (req, res) => {
+  const body = req.body;
+  statSemaine(body, (err, results) => {
+  if (err) {
+    console.log(err);
+    return;
+  }
+  return res.json({
+    success: 1,
+    data: results
+  });
+});
 }
 }

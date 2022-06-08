@@ -1,4 +1,4 @@
-const { insertConfig, getPartByEmail, getPartenaires, getPartConfig, getNamePartById, updatePart,create } = require("./partenaire.service");
+const {getPartByEmail, getPartenaires, getPartConfig, getNamePartById, updatePart,create } = require("./partenaire.service");
 const { sign } = require("jsonwebtoken");
 const conn = require("../../config/database");
 
@@ -40,8 +40,7 @@ module.exports = {
       });
     });
   },
-
-  getPartConfig: (req, res) => {
+    getPartConfig: (req, res) => {
     const id_part = req.params.id_part;
     getPartConfig(id_part, (err, results) => {
       if (err) {

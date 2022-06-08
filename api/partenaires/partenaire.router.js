@@ -9,5 +9,4 @@ router.patch("/updatePart",updatePart);
 router.post("/demandePartenariat",demande);
 
 
-
 module.exports = router;

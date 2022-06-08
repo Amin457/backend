@@ -1,4 +1,4 @@
-const { getCadeauByIdPart, insertRecompense, getRecompense, getEtatJeux, updateEtatJeux, deleteCadeau, ajouterCadeau, getGagnants } = require("./cadeau.service");
+const {statSemaineGagnants, getCadeauByIdPart, insertRecompense, getRecompense, getEtatJeux, updateEtatJeux, deleteCadeau, ajouterCadeau, getGagnants } = require("./cadeau.service");
 const conn = require("../../config/database");
 var dateObj = new Date();
 var month = dateObj.getUTCMonth() + 1; //months from 1-12
@@ -165,25 +165,6 @@ module.exports = {
       });
     });
   },
-  /* modifierCadeau : (req, res) => {
-     const body = req.body;
-     modifierCadeau(body, (err, results) => {
-       if (err) {
-         console.log(err);
-         return;
-       }
-       if (!results) {
-         return res.json({
-           success: 0,
-           message: "Record Not Found"
-         });
-       }
-       return res.json({
-         success: 1,
-         message: "cadeau modifier avec succes"
-       });
-     });
-   },*/
   ajouterCadeau: (req, res) => {
     const body = req.body;
     conn.query('select id_jeu_part from jeux_partenaire where id_part=?', [body.id_part], (err, results, fields) => {
@@ -222,5 +203,18 @@ module.exports = {
         message: "Record not Found"
       });
     });
+  },
+  statSemaineGagnants: (req, res) => {
+    const body = req.body;
+    statSemaineGagnants(body, (err, results) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    return res.json({
+      success: 1,
+      data: results
+    });
+  });
   }
 }

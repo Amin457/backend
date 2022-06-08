@@ -11,7 +11,7 @@ const notification = async (req, res) => {
 
   var serverKey = 'AAAAYuYj4EQ:APA91bFZw4D_nQW50_RJR1Wy0OPfZEvOhdyt4Qe0SaHD7YIn92UFf4UarjoDAo45V_4kqPszp07nMcNwXxTZU9gzbs8D51HqTHb-Qag_Mwx1f5OYAw8LGTR0OGu1JqaJr1cLUrdea2CO';
   conn.query(
-    `select DISTINCT token from notification`, (error, results, fields) => {
+    `select DISTINCT token from device`, (error, results, fields) => {
       if (results.length > 0) {
         for (var i = 0; i < results.length; i++) {
 

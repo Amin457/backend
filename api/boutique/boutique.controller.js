@@ -1,9 +1,9 @@
-const {getLocationPartById} = require("./localisation.service");
+const {getBoutiquePartById} = require("./boutique.service");
 
 module.exports = {
- getLocationPartById: (req, res) => {
+  getBoutiquePartById: (req, res) => {
     const id_part = req.params.id_part;
-    getLocationPartById(id_part, (err, results) => {
+    getBoutiquePartById(id_part, (err, results) => {
       if (err) {
         console.log(err);
         return;

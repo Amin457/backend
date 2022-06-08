@@ -13,7 +13,8 @@ module.exports = {
         return callBack(null, results);
       }
     );
-  },
+  }
+  ,
   getPartConfig: (id_part, callBack) => {
     conn.query(`select adresseIP,env,storeID,dbId from partenaire where id_part=?`,
       [id_part],
@@ -72,10 +73,11 @@ module.exports = {
     );
   },
   create: (data, callBack) => {
-    conn.query('insert into partenaire(societe,mail,Fax,tel,codePostal,img,etat) values(?,?,?,?,?,?,2)',
+    conn.query('insert into partenaire(societe,mail,mdp,Fax,tel,codePostal,img,etat) values(?,?,?,?,?,?,?,2)',
       [
         data.societe,
         data.mail,
+        data.mdp,
         data.Fax,
         data.tel,
         data.codePostal,

@@ -91,20 +91,7 @@ module.exports = {
       }
     );
   },
-  /*  modifierCadeau : (data, callBack) => {
-      conn.query(
-        `update cadeau set description=?,quantity=? where id_cadeau = ?`,
-        [data.description,data.quantity,data.id_cadeau],
-        (error, results, fields) => {
-          if (error) {
-            callBack(error);
-          }
-          return callBack(null, results);
-        }
-      );
-    },*/
-
-  ajouterCadeau: (data, id_jeu_part, callBack) => {
+    ajouterCadeau: (data, id_jeu_part, callBack) => {
 
     conn.query('insert into cadeau (description,quantity,id_jeu_part) values(?,?,?)',
       [
@@ -125,13 +112,28 @@ module.exports = {
   getGagnants: (id_part, callBack) => {
     conn.query(`select cadeau.description,tour.date,client.Nom,client.Prenom,client.mail  from cadeau,partenaire,tour,jeux_partenaire,client
                  where tour.id_cadeau=cadeau.id_cadeau and tour.id_client=client.id
-                  and cadeau.id_jeu_part=jeux_partenaire.id_jeu_part and jeux_partenaire.id_part=partenaire.id_part and jeux_partenaire.id_part=?`,
+                  and cadeau.id_jeu_part=jeux_partenaire.id_jeu_part and jeux_partenaire.id_part=partenaire.id_part and cadeau.description<>"perdu" and  jeux_partenaire.id_part=?`,
       [id_part],
       (error, results, fields) => {
         if (error) {
           callBack(error);
         }
 
+        return callBack(null, results);
+      }
+    );
+  },
+
+  statSemaineGagnants: (data, callBack) => {
+    conn.query(
+      `SELECT (DATE_FORMAT(tour.date,'%Y/%m/%d')) as nDay , DAYNAME(DATE_FORMAT(tour.date,'%Y/%m/%d')) as day,COUNT(*)as nbrTotal from cadeau,partenaire,tour,jeux_partenaire 
+      WHERE tour.id_cadeau=cadeau.id_cadeau and cadeau.id_jeu_part=jeux_partenaire.id_jeu_part and jeux_partenaire.id_part=partenaire.id_part and cadeau.description<>"perdu" and jeux_partenaire.id_part=? and tour.date>=? and tour.date<=? 
+      GROUP BY DAY(DATE_FORMAT(tour.date,'%Y/%m/%d'));`,
+      [data.id_part, data.dateDebut, data.dateFin],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
         return callBack(null, results);
       }
     );

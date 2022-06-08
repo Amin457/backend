@@ -1,4 +1,4 @@
-const { nbrFeedback, Question, nbrRep } = require("./statFeed.service");
+const { nbrFeedback, Question, nbrRep,statSemaine,getNbFeedParMoix } = require("./statFeed.service");
 
 module.exports = {
   nbrFeedback: (req, res) => {
@@ -58,5 +58,31 @@ module.exports = {
       });
 
     });
-  }
+  },
+  statSemaine: (req, res) => {
+    const body = req.body;
+    statSemaine(body, (err, results) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    return res.json({
+      success: 1,
+      data: results
+    });
+  });
+  },
+  getNbFeedParMoix: (req, res) => {
+    const body = req.body;
+    getNbFeedParMoix(body, (err, results) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    return res.json({
+      success: 1,
+      data: results
+    });
+  });
+}
 }

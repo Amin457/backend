@@ -1,4 +1,4 @@
-const { insertFeed, updateFeed, getAllQuest, getAllRep, insertQuestion, insertReponse, getReponse, getFeed,deleteQuestion } = require("./feedback.service");
+const { insertFeed, updateFeed, getAllQuest, getAllRep, insertQuestion, insertReponse, getReponse, getFeed,deleteQuestion,getAllReponse } = require("./feedback.service");
 const conn = require("../../config/database");
 
 
@@ -158,6 +158,15 @@ module.exports = {
       });
     });
 
+  },
+  getAllReponse: (req, res) => {
+    getAllReponse((err, results) => {
+      return res.json({
+        success: 1,
+        data: results
+      });
+
+    });
   }
 }
 

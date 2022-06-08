@@ -146,6 +146,18 @@ module.exports = {
         return callBack(null, results);
       }
     );
+  },
+  getAllReponse: (callBack) => {
+    conn.query(`select * from reponse `,
+      [],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+
+        return callBack(null, results);
+      });
+
   }
 
 

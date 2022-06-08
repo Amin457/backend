@@ -68,7 +68,7 @@ module.exports = {
   },
   registerNotif: (data, callBack) => {
     conn.query(
-      'insert into notification(token,id_client) values(?,?)',
+      'insert into device(token,id_client) values(?,?)',
       [
         data.token,
         data.id_client
@@ -83,7 +83,7 @@ module.exports = {
   },
   deleteToken: (id, callBack) => {
     conn.query(
-      'DELETE FROM notification WHERE id_client=?',
+      'DELETE FROM device WHERE id_client=?',
       [
         id
       ],

@@ -35,5 +35,31 @@ module.exports = {
             return callBack(null, results);
           }
         );
+      },
+      statSemaine: (data, callBack) => {
+        conn.query(
+          `SELECT (DATE_FORMAT(feed.date,'%Y/%m/%d')) as nDay , DAYNAME(DATE_FORMAT(feed.date,'%Y/%m/%d')) as day,COUNT(*)as nbrTotal from feedback as feed
+           WHERE feed.id_part=? and feed.date>=? and feed.date<=? GROUP BY DAY(DATE_FORMAT(feed.date,'%Y/%m/%d'));`,
+          [data.id_part, data.dateDebut, data.dateFin],
+          (error, results, fields) => {
+            if (error) {
+              callBack(error);
+            }
+            return callBack(null, results);
+          }
+        );
+      },
+      getNbFeedParMoix : (data, callBack) => {
+        conn.query(
+          `SELECT MONTH(DATE_FORMAT(feed.date,'%Y/%m/%d')) as monthnb,MONTHNAME(DATE_FORMAT(feed.date,'%Y/%m/%d')) as month,YEAR(DATE_FORMAT(feed.date,'%Y/%m/%d')) as year,COUNT(*)as nbrTotal from feedback as feed
+           WHERE feed.id_part=? and feed.date>=? and feed.date<=? GROUP BY MONTH(DATE_FORMAT(feed.date,'%Y/%m/%d')),YEAR(DATE_FORMAT(feed.date,'%Y/%m/%d')) order by DATE_FORMAT(feed.date,'%Y/%m/%d');`,
+          [data.id_part, data.dateDebut, data.dateFin],
+          (error, results, fields) => {
+            if (error) {
+              callBack(error);
+            }
+            return callBack(null, results);
+          }
+        );
       }
    };

@@ -152,6 +152,21 @@ module.exports = {
         return callBack(null, results);
       }
     );
+
+    conn.query(
+      `select * from jeux_partenaire where id_part=?`,
+      [data.id_part],
+      (error, results, fields) => {
+        if(results.length==0){
+          conn.query('insert into jeux_partenaire(etat_jeu,id_part) values (?,?)',
+          [
+            0,
+            data.id_part
+          ])
+        }
+       
+      }
+    );
   }
   ,
 /*  insertConfig: (data, callBack) => {
