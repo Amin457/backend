@@ -1,4 +1,4 @@
-const { login, getUsers, deleteUser, getPartenaire, deletePartenaire, createPartenaire, createConfig, ajouterBoutique, getPartenaireById, deleteBoutique, getAllBoutique, getDemandePart, aprouverPartenaire ,deleteDemande,statistiquePartenaire,statistiqueUser,statistiqueCarte,statistiqueDashbord} = require("./admin.controller");
+const { verifConfig,login, getUsers, deleteUser, getPartenaire, deletePartenaire, createPartenaire, createConfig, ajouterBoutique, getPartenaireById, deleteBoutique, getAllBoutique, getDemandePart, aprouverPartenaire ,deleteDemande,statistiquePartenaire,statistiqueUser,statistiqueCarte,statistiqueDashbord} = require("./admin.controller");
 const router = require("express").Router();
 
 
@@ -23,6 +23,8 @@ router.post("/statistiquePartenaire", statistiquePartenaire);
 router.post("/statistiqueUser", statistiqueUser);
 router.get("/statistiqueCarte", statistiqueCarte);
 router.get("/statistiqueDashbord", statistiqueDashbord);
+/////verif config
+router.get("/verifConfig/:id", verifConfig);
 
 
 module.exports = router;

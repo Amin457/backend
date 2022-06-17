@@ -49,6 +49,18 @@ module.exports = {
         return callBack(null, results);
       }
     );
+  },
+  verifConfig: (id, callBack) => {
+    conn.query(
+      `select adresseIP,env,storeID,dbId from partenaire where id_part=?`,
+      [id],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results);
+      }
+    );
   }
   ,
   deleteUser: (id, etat, callBack) => {

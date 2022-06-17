@@ -97,7 +97,6 @@ module.exports = {
     var argsString = cardId + "," + dbId;
     runner.exec("php " + phpScriptPath + " " + argsString, function (err, phpResponse, stderr) {
       if (err) {
-        console.log(err);
         return res.status(500).json({
           message: "Impossible de trouver la carte " + cardId
         });
@@ -151,7 +150,7 @@ module.exports = {
 
 
     var runner = require("child_process");
-    var phpScriptPath = "api/soap/createClient.php";
+    var phpScriptPath = "api/cartes/createClient.php";
 
     var argsString = firstName + "," + lastName + "," + email + "," + storeId + "," + BirthDateDay + "," + BirthDateMonth + "," + BirthDateYear + "," + CustomerId + "," + dbId;
 
@@ -171,7 +170,7 @@ module.exports = {
             console.log(data);
 
             var runner = require("child_process");
-            var phpScriptPath = "api/soap/createCard.php";
+            var phpScriptPath = "api/cartes/createCard.php";
             var argsString = data + "," + storeId + "," + dbId;
 
 
@@ -225,7 +224,7 @@ module.exports = {
         });
       } else {
         var data = JSON.parse(phpResponse).GetAvailableLoyaltyPointsResult;
-        return res.json({
+        return res.status(200).json({
           data
         });
       }

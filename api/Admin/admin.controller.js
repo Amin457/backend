@@ -1,4 +1,4 @@
-const { getUserByUserEmail, getUsers, deleteUser, getPartenaire, deletePartenaire, create, insertConfig, updateConfig, ajouterBoutique, getPartenaireById, deleteBoutique ,getAllBoutique,getDemandePart,aprouverPartenaire,deleteDemande,statistiquePartenaire,statistiqueUser,statistiqueCarte,statistiqueDashbord} = require("./admin.service");
+const { getUserByUserEmail, getUsers, deleteUser, getPartenaire, deletePartenaire, create,verifConfig, insertConfig, updateConfig, ajouterBoutique, getPartenaireById, deleteBoutique ,getAllBoutique,getDemandePart,aprouverPartenaire,deleteDemande,statistiquePartenaire,statistiqueUser,statistiqueCarte,statistiqueDashbord} = require("./admin.service");
 const { hashSync, genSaltSync, compareSync } = require("bcrypt");
 const { sign } = require("jsonwebtoken");
 const conn = require("../../config/database");
@@ -73,6 +73,25 @@ module.exports = {
         data: results,
       });
     });
+  },
+  verifConfig: (req, res) => {
+    const id = req.params.id;
+    verifConfig(id, (err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      if (!results) {
+        return res.json({
+          success: 0,
+          message: "Record not Found"
+        });
+      }
+      return res.json({
+        success: 1,
+        data: results,
+      });
+    });
   }
   ,
   deleteUser: (req, res) => {
@@ -121,7 +140,7 @@ module.exports = {
     const body = req.body;
     conn.query('select mail from partenaire where mail=?', [body.mail], (err, results, fields) => {
       if (results.length > 0) {
-        return res.status(500).json({
+        return res.status(401).json({
           success: 0,
           message: "email alredy in use"
         });

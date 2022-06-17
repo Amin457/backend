@@ -9,7 +9,6 @@ const boutiqueRouter = require("./api/boutique/boutique.router");
 const FeedbackRouter = require("./api/feedback/feedback.router");
 const ReclamationRouter = require("./api/reclamations/reclamation.router");
 const fileRouter = require("./api/files/file.router");
-const soapRouter = require("./api/soap/soap.router");
 const cadeauRouter = require("./api/cadeau/cadeau.router");
 const statRec = require("./api/statistique_reclamation/statRec.router");
 const statFeed = require("./api/statistique_feedback/statFeed.router");
@@ -45,7 +44,6 @@ app.use("/api/boutique",boutiqueRouter);
 app.use("/api/feedback",FeedbackRouter);
 app.use("/api/reclamation",ReclamationRouter);
 app.use("/api/files",fileRouter);
-app.use("/api/soap",soapRouter);
 app.use("/api/cadeau",cadeauRouter);
 app.use("/api/statRec",statRec);
 app.use("/api/notification",notification);
@@ -58,3 +56,5 @@ app.use("/api/statFeed",statFeed);
 app.listen(3000,()=>{
     console.log("server runnig on Port :" ,3000);
 });
+
+module.exports = app;
