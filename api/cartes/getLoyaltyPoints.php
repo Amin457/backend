@@ -1,11 +1,11 @@
 <?php
-  $url = "http://197.13.7.115/Y2_DEMO/LoyaltyWcfService.svc?wsdl";
+  $url = "http://192.168.168.200/Y2_TEST/LoyaltyWcfService.svc?wsdl";
 
   $client = new SoapClient( $url,
 	array(
 	  "location" => $url,
-	  "login" => "RETAIL_TS\CEGID",
-	  "password" => "CEGID"
+    "login" => "DEMO20\STOCK",
+	  "password" => "STOCK1"
 	)
   );
   $params = explode(",", $argv[1]);

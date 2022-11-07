@@ -1,9 +1,9 @@
 const mysql = require("mysql");
 var conn = mysql.createConnection({
-    port:3306,
+    port:3307,
     database:"digicard",
     host:"localhost",
-    password:"",
+    password:"amin",
     user:"root"
   });
 

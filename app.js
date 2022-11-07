@@ -53,8 +53,8 @@ app.use("/api/statFeed",statFeed);
 
 
 
-app.listen(3000,()=>{
-    console.log("server runnig on Port :" ,3000);
+app.listen(process.env.PORT,()=>{
+    console.log("server runnig on Port :" ,process.env.PORT);
 });
 
 module.exports = app;

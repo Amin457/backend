@@ -1,11 +1,11 @@
 <?php
   // client proxy
-  $url = "http://197.13.7.115/Y2_DEMO/CustomerWcfService.svc?wsdl";
+  $url = "http://192.168.168.200/Y2_TEST/CustomerWcfService.svc?wsdl";
   $client = new SoapClient( $url,
 	array(
 	  "location" => $url,
-	  "login" => "RETAIL_TS\CEGID",
-	  "password" => "CEGID"
+    "login" => "DEMO20\STOCK",
+	  "password" => "STOCK1"
 	)
   );
 
