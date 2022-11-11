@@ -147,24 +147,27 @@ module.exports = {
     );
   },
   updateConfig: (data, callBack) => {
-    conn.query('update partenaire set adresseIP=?,env=?,storeID=?,dbId=? where id_part=?',
+    conn.query('update partenaire set adresseIP=?,env=?,storeID=?,dbId=?,warehouseID=?,username_cegid=?,password_cegid=? where id_part=?',
       [
         data.adresseIP,
         data.env,
         data.storeID,
         data.dbId,
+        data.warehouseID,
+        data.username_cegid,
+        data.password_cegid,
         data.id_part
-
+  
       ],
       (error, results, fields) => {
         if (error) {
           callBack(error);
         }
-
+  
         return callBack(null, results);
       }
     );
-
+  
     conn.query(
       `select * from jeux_partenaire where id_part=?`,
       [data.id_part],
@@ -181,25 +184,6 @@ module.exports = {
     );
   }
   ,
-/*  insertConfig: (data, callBack) => {
-    conn.query('insert into config(adresseIP,env,storeID,dbId,id_part) values(?,?,?,?,?)',
-      [
-        data.adresseIP,
-        data.env,
-        data.storeID,
-        data.dbId,
-        data.id_part
-
-      ],
-      (error, results, fields) => {
-        if (error) {
-          callBack(error);
-        }
-
-        return callBack(null, results);
-      }
-    );
-  },*/
   ajouterBoutique: (data, callBack) => {
     conn.query('insert into boutique(id_part,boutique) values(?,?)',
       [

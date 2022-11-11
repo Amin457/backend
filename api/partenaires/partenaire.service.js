@@ -1,5 +1,5 @@
 const conn = require("../../config/database");
-
+var datetime = new Date();
 
 module.exports = {
   getPartenaires: callBack => {
@@ -73,7 +73,7 @@ module.exports = {
     );
   },
   create: (data, callBack) => {
-    conn.query('insert into partenaire(societe,mail,mdp,Fax,tel,codePostal,img,etat) values(?,?,?,?,?,?,?,2)',
+    conn.query('insert into partenaire(societe,mail,mdp,Fax,tel,codePostal,img,etat,createdAt) values(?,?,?,?,?,?,?,2,?)',
       [
         data.societe,
         data.mail,
@@ -81,7 +81,8 @@ module.exports = {
         data.Fax,
         data.tel,
         data.codePostal,
-        data.img
+        data.img,
+        datetime
 
       ],
       (error, results, fields) => {
@@ -101,5 +102,42 @@ module.exports = {
       }
     );
   }
+/*,
+updateConfig: (data, callBack) => {
+  conn.query('update partenaire set adresseIP=?,env=?,storeID=?,dbId=?,warehouseID=?,username_cegid=?,password_cegid=? where id_part=?',
+    [
+      data.adresseIP,
+      data.env,
+      data.storeID,
+      data.dbId,
+      data.id_part,
+      data.warehouseID,
+      data.username_cegid,
+      data.password_cegid
 
+    ],
+    (error, results, fields) => {
+      if (error) {
+        callBack(error);
+      }
+
+      return callBack(null, results);
+    }
+  );
+
+  conn.query(
+    `select * from jeux_partenaire where id_part=?`,
+    [data.id_part],
+    (error, results, fields) => {
+      if(results.length==0){
+        conn.query('insert into jeux_partenaire(etat_jeu,id_part) values (?,?)',
+        [
+          0,
+          data.id_part
+        ])
+      }
+     
+    }
+  );
+}*/
 };

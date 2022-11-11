@@ -1,14 +1,15 @@
 const conn = require("../../config/database");
 
-
+var datetime = new Date();
 module.exports = {
   insertRec: (data, callBack) => {
-    conn.query('insert into reclamation (id_boutique,id_client,sujet_rec,description) values(?,?,?,?)',
+    conn.query('insert into reclamation (id_boutique,id_client,sujet_rec,description,date_rec) values(?,?,?,?,?)',
       [
         data.id_boutique,
         data.id_client,
         data.sujet_rec,
-        data.description
+        data.description,
+        datetime
       ],
       (error, results, fields) => {
         if (error) {

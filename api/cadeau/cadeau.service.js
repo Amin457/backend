@@ -6,6 +6,8 @@ var day = dateObj.getUTCDate();
 var year = dateObj.getUTCFullYear();
 newdate = year + "-" + month + "-" + day;
 
+
+var datetime = new Date();
 module.exports = {
 
   getEtatJeux: (id_part, callBack) => {
@@ -34,10 +36,11 @@ module.exports = {
     );
   },
   insertRecompense: (data, callBack) => {
-    conn.query('insert into tour (id_client,id_cadeau) values(?,?)',
+    conn.query('insert into tour (id_client,id_cadeau,date) values(?,?,?)',
       [
         data.id_client,
         data.id_cadeau,
+        datetime
       ],
       (error, results, fields) => {
         if (error) {

@@ -1,16 +1,17 @@
 const conn = require("../../config/database");
 
-
+var datetime = new Date();
 module.exports = {
   create: (data, callBack) => {
-    conn.query('insert into client(Nom,Prenom,mail,mdp,dateNaissance,CIN) values(?,?,?,?,?,?)',
+    conn.query('insert into client(Nom,Prenom,mail,mdp,dateNaissance,CIN,createdAt) values(?,?,?,?,?,?,?)',
       [
         data.Nom,
         data.Prenom,
         data.mail,
         data.mdp,
         data.dateNaissance,
-        data.CIN
+        data.CIN,
+        datetime
       ],
       (error, results, fields) => {
         if (error) {
