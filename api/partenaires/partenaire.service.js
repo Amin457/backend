@@ -16,7 +16,7 @@ module.exports = {
   }
   ,
   getPartConfig: (id_part, callBack) => {
-    conn.query(`select adresseIP,env,storeID,dbId from partenaire where id_part=?`,
+    conn.query(`select adresseIP,env,storeID,dbId,warehouseID,username_cegid,password_cegid from partenaire where id_part=?`,
       [id_part],
       (error, results, fields) => {
         if (error) {
